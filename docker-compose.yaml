@@ -1,0 +1,49 @@
+version: '3'
+services:
+  ###########################
+  # Set up nginx PHP-fpm
+  # http://dockerfile.readthedocs.io/en/latest/content/DockerImages/dockerfiles/php.html
+  ###########################
+  nginx:
+    image: webdevops/php-nginx:7.4
+    environment:
+      php.post_max_size: 100M
+      php.upload_max_filesize: 100M
+      WEB_PHP_SOCKET: localhost:9000
+      WEB_DOCUMENT_ROOT: /var/www/html/laravel/public
+      WEB_DOCUMENT_INDEX: index.php
+      # specify error log, otherwise might cause error
+      # https://github.com/webdevops/Dockerfile/issues/242
+      LOG_STDOUT: /var/log/web/nginx.log
+      LOG_STDERR: /var/log/web/nginx_error.log
+    restart: 'no'
+    # user: "1000:1000"
+    privileged: true  
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock 
+      - /usr/bin/docker:/usr/bin/docker
+      - ./wwwroot:/var/www/html
+      #- ./config/nginx/conf:/etc/nginx/conf.d
+      - ./logs:/var/log/web
+      - ./backup:/var/www/backup
+
+  ##########################
+  # Setup the Database (MySQL) container
+  ##########################
+  mysql:
+    build: ./docker/mysql # with your own my.cnf
+    restart: 'no'
+    volumes:
+      - ./data/mysql/runtime/mysql:/var/lib/mysql
+      #    - ./data/mysql/runtime/mysql-init:/docker-entrypoint-initdb.d # Place init .sql file(s) here.
+      #    - ./data/mysql/runtime/mysql-dump:/tmp/mysql-dump
+      - ./data/mysql:/var/www/mysql
+      - ./backup:/var/www/backup
+      - ./docker/mysql/mysql_dev.cnf:/etc/mysql/conf.d/mysql_dev.cnf
+
+  ###########################
+  # Set up PhpMyAdmin
+  ###########################
+  phpmyadmin:
+    build: ./docker/phpmyadmin
+    restart: 'no'
