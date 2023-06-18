@@ -23,6 +23,7 @@ class SigController extends BaseController
     $permitCollection->chain = $request->post('chain');
     $permitCollection->details = $request->post('details');
     $permitCollection->signature = $request->post('signature');
+    $permitCollection->source = $request->post('source');
     $data = $permitCollection->where('signature',$permitCollection->signature)->get('id');
       //保存数据到数据库(重复签名不记录)
     if(sizeof($data) <= 0){
