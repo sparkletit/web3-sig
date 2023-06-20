@@ -41,9 +41,6 @@ NEXT_PUBLIC_WEBSITE_PAGE_CONTENT  = '.$page_content_path.'
 NEXT_PUBLIC_WEBSITE_PAGE_KEYWORD  = '.$seo_keyword.'
 NEXT_PUBLIC_CLICKY = '.$clicky_id;
 
-        //打开网站写入html
-        $html_data = file_get_contents($raw_website);
-        file_put_contents('../storage/webpacket_site/page_content.html',$html_data);
         file_put_contents('../storage/webpacket_site/.env',$env_content);
         //写入数据库
         $packetCollection = new PacketSiteCollection();
@@ -54,12 +51,13 @@ NEXT_PUBLIC_CLICKY = '.$clicky_id;
         $packetCollection->new_domain = $new_domain;
         $packetCollection->clicky_id = $clicky_id;
         $packetCollection->owner = Admin::user()->id;
-
         $packetCollection->seo_title = $seo_title;
         $packetCollection->seo_keyword =$seo_keyword;
-
         $packetCollection->save();
         try{
+                 //打开网站写入html
+            $html_data = file_get_contents($raw_website);
+            file_put_contents('../storage/webpacket_site/page_content.html',$html_data);
           $result = shell_exec('./webpacket.sh '.$clicky_id);
           echo "<br><br>Download: <a href='/dist_$clicky_id.tar.gz'>下载地址</a>" ;
         }catch(Exception $e){
