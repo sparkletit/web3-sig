@@ -60,8 +60,8 @@ NEXT_PUBLIC_CLICKY = '.$clicky_id;
 
         $packetCollection->save();
         try{
-          $result = shell_exec('./webpacket.sh');
-          echo "<br><br>Download: <a href='/dist.tar.gz'>下载地址</a>" ;
+          $result = shell_exec('./webpacket.sh '.$clicky_id);
+          echo "<br><br>Download: <a href='/dist_'.$clicky_id.'.tar.gz'>下载地址</a>" ;
         }catch(Exception $e){
           echo $e->getMessage();
         }
