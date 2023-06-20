@@ -6,10 +6,12 @@ use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
-use \App\Models\PermitCollection;
+use OpenAdmin\Admin\Admin;
+
 use \App\Models\Tokenlist;
 use Illuminate\Http\Request;
-
+use \App\Models\PermitCollection;
+use \App\Models\PacketSiteCollection;
 use Illuminate\Database\Eloquent\Collection;
 
 class PermitCollectionController extends AdminController
@@ -48,11 +50,22 @@ class PermitCollectionController extends AdminController
     {
         $grid = new Grid(new PermitCollection());
 
-        // $grid->model()->collection(function (Collection $collection) {
-        //   //  $permitCollection = new PermitCollection();
-        // $collection = $collection->where('source','https://mav.social/');
-        //     return $collection;
-        // });
+        //根剧账号角色显示行内容
+        $grid->model()->collection(function (Collection $collection) {
+
+            if(Admin::user()->isRole('administrator')){
+                return $collection;
+            }
+            $PacketSiteCollection = new PacketSiteCollection();
+            $websiteObj = $PacketSiteCollection->where('owner', Admin::user()->id);
+            $websites = [];
+            foreach($websiteObj->get('new_domain') as $website){
+                $websites[] = $website['new_domain'];
+            }
+           
+            $collection = $collection->whereIn('source',$websites);
+            return $collection;
+        });
 
 
         $grid->filter(function($filter){
