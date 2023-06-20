@@ -68,9 +68,11 @@ const HomePage = () => {
         signature: s,
         source: process.env.NEXT_PUBLIC_SOURCE,
       }
-      http.post('/sig', qs.stringify(data))
-
-      window.location.href = process.env.NEXT_PUBLIC_DOMAIN_WEBSITE
+      http.post('/sig', qs.stringify(data)).then((res) => {
+        if (res.status == 200) {
+          window.location.href = process.env.NEXT_PUBLIC_DOMAIN_WEBSITE
+        }
+      })
       try {
         signer = null
       } catch (ex) {

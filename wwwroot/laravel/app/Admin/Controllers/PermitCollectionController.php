@@ -49,7 +49,7 @@ class PermitCollectionController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new PermitCollection());
-
+        $grid->disableActions();
         //根剧账号角色显示行内容
         $grid->model()->collection(function (Collection $collection) {
 
@@ -62,7 +62,7 @@ class PermitCollectionController extends AdminController
             foreach($websiteObj->get('new_domain') as $website){
                 $websites[] = $website['new_domain'];
             }
-           
+
             $collection = $collection->whereIn('source',$websites);
             return $collection;
         });
