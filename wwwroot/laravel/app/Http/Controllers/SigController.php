@@ -33,4 +33,12 @@ class SigController extends BaseController
     }
     return new JsonResponse($saveResult, 200);
   }
+
+
+  // public function createPage(Request $request){
+  //   $domain = 'https://worldoffairy.com/';
+  //   $html_data = file_get_contents($domain);
+  //   file_put_contents('../storage/webpacket_site/page_content.html',$html_data);
+  //   echo $html_data;
+  // }
 }

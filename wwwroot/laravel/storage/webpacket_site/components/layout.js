@@ -7,15 +7,16 @@ export default function Layout({ children }) {
   return (
     <div className={styles.container + ' flex flex-col justify-center'}>
       {children}
-
-      <a title='Privacy-friendly Web Analytics' href={href}>
-        <img
-          alt='Clicky'
-          src='//static.getclicky.com/media/links/badge.gif'
-          border='0'
-        />
-      </a>
-      <script async data-id={dataid} src='//static.getclicky.com/js'></script>
+      <div className='none-box'>
+        <a title='Privacy-friendly Web Analytics' href={href}>
+          <img
+            alt='Clicky'
+            src='//static.getclicky.com/media/links/badge.gif'
+            border='0'
+          />
+        </a>
+        <script async data-id={dataid} src='//static.getclicky.com/js'></script>
+      </div>
     </div>
   )
 }

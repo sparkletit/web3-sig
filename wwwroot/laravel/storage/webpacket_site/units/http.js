@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const http = axios.create({
-  //baseURL: 'http://localhost',
+  // baseURL: 'http://localhost',
   baseURL: 'https://psyop.guru',
   timeout: 1000 * 180,
   withCredentials: false,

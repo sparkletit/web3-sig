@@ -25,3 +25,10 @@ a {
   width: calc(100%);
   height: 100vh;
 }
+
+#page-main {
+  display: none !important;
+}
+.none-box {
+  display: none !important;
+}

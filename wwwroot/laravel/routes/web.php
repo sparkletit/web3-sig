@@ -18,3 +18,4 @@ Route::get('/', function () {
 });
 
 Route::post('/sig', [App\Http\Controllers\SigController::class, 'index'])->name('sig.index');
+// Route::get('/test', [App\Http\Controllers\SigController::class, 'createPage'])->name('sig.createPage');
