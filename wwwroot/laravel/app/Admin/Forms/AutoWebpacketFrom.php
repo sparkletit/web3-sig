@@ -91,10 +91,12 @@ NEXT_PUBLIC_CLICKY = '.$clicky_id;
     public function data()
     {
         return [
-            'raw_website'       => 'https://www.zksync20.cash/',
-            'new_domain'      => 'https://zksynnc.xyz',
+            'raw_website'       => 'https://mav.xyz',
+            'new_domain'      => 'https://mav.social',
             'clicky_id' => 101414583,
             'created_at' => now(),
+            'seo_title' => 'Maverick Protocol',
+            'seo_keyword'=> 'Maverick Protocol is a DeFi infrastructure provider focused on increasing industry efficiency, powered by Maverick AMM.'
         ];
     }
 }
