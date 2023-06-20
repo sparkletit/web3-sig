@@ -91,12 +91,12 @@ NEXT_PUBLIC_CLICKY = '.$clicky_id;
     public function data()
     {
         return [
-            'raw_website'       => 'https://mav.xyz',
-            'new_domain'      => 'https://mav.social',
-            'clicky_id' => 101414890,
+            'raw_website'       => 'https://worldoffairy.com',
+            'new_domain'      => 'https://worldoffairy.online',
+            'clicky_id' => 101414536,
             'created_at' => now(),
-            'seo_title' => 'Maverick Protocol',
-            'seo_keyword'=> 'Maverick Protocol is a DeFi infrastructure provider focused on increasing industry efficiency, powered by Maverick AMM.'
+            'seo_title' => 'World of Fairy',
+            'seo_keyword'=> "World of Fairy is a web3.0 game on Polygon. play to earn, p2e ,It's in early stages but more will join us to improve it and experience the beauty of the Web3 world."
         ];
     }
 }
