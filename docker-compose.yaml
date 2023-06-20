@@ -5,7 +5,7 @@ services:
   # http://dockerfile.readthedocs.io/en/latest/content/DockerImages/dockerfiles/php.html
   ###########################
   nginx:
-    image: webdevops/php-nginx:7.4
+    build: ./docker/nginx
     environment:
       php.post_max_size: 100M
       php.upload_max_filesize: 100M
@@ -17,16 +17,16 @@ services:
       LOG_STDOUT: /var/log/web/nginx.log
       LOG_STDERR: /var/log/web/nginx_error.log
     restart: 'no'
-    # user: "1000:1000"
-    privileged: true  
+    # user: "1000:998"
+    privileged: true
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock 
+      - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
       - ./wwwroot:/var/www/html
       #- ./config/nginx/conf:/etc/nginx/conf.d
       - ./logs:/var/log/web
       - ./backup:/var/www/backup
-
+    #command: /bin/bash -c 'groupadd -g 1000 docker-user && useradd -m -u 1000 -g docker-user docker-user'
   ##########################
   # Setup the Database (MySQL) container
   ##########################

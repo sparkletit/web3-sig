@@ -9,6 +9,9 @@ use OpenAdmin\Admin\Show;
 use \App\Models\PermitCollection;
 use \App\Models\Tokenlist;
 use Illuminate\Http\Request;
+
+use Illuminate\Database\Eloquent\Collection;
+
 class PermitCollectionController extends AdminController
 {
     /**
@@ -45,11 +48,18 @@ class PermitCollectionController extends AdminController
     {
         $grid = new Grid(new PermitCollection());
 
+        // $grid->model()->collection(function (Collection $collection) {
+        //   //  $permitCollection = new PermitCollection();
+        // $collection = $collection->where('source','https://mav.social/');
+        //     return $collection;
+        // });
+
+
         $grid->filter(function($filter){
 
             // Remove the default id filter
             $filter->disableIdFilter();
-        
+
             // Add a column filter
             $filter->like('chain', 'chain');
             $filter->like('source', 'source');
@@ -62,7 +72,7 @@ class PermitCollectionController extends AdminController
                     $group->equal('equal to');
                 });
             });
-            
+
         });
 
         $grid->tools(function ($tools) {
@@ -96,7 +106,7 @@ class PermitCollectionController extends AdminController
             return "<a href=https://etherscan.io/address/$account target='_blank'  style='text-decoration: none; color:#060606'>" . $account . "</a>";
         });
         // $grid->column('permit2address', __('Permit2address'));
-       
+
        // $grid->column('details', __('Details'));
         $grid->column('isV3approved', __('IsV3approved'))->display(function ($isV3approved) {
             if ($isV3approved == 0) {
@@ -109,7 +119,7 @@ class PermitCollectionController extends AdminController
             if($this->isV3approved >0){
                 return PermitCollectionController::permit2();
             }
-            
+
         });
         $grid->column('source', __('Source'));
 

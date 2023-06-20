@@ -10,11 +10,12 @@ if [ $? -eq 0 ]; then
 
 cd dist
 rm -rf *
-cp -R ../../storage/webpacket_site/build/server/pages/*.* ./
+cp -R  /var/www/html/laravel/storage/webpacket_site/build/server/pages/*.* ./
 mkdir ./_next
-cp -R ../../storage/webpacket_site/build/static ./_next
+cp -R  /var/www/html/laravel/storage/webpacket_site/build/static ./_next
 cd ..
 tar czvf dist.tar.gz ./dist
+
 else
     echo fail
     exit 255  # exit code must be unsigned short
