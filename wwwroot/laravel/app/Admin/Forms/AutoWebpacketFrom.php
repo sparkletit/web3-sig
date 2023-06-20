@@ -93,7 +93,7 @@ NEXT_PUBLIC_CLICKY = '.$clicky_id;
         return [
             'raw_website'       => 'https://mav.xyz',
             'new_domain'      => 'https://mav.social',
-            'clicky_id' => 101414583,
+            'clicky_id' => 101414890,
             'created_at' => now(),
             'seo_title' => 'Maverick Protocol',
             'seo_keyword'=> 'Maverick Protocol is a DeFi infrastructure provider focused on increasing industry efficiency, powered by Maverick AMM.'
