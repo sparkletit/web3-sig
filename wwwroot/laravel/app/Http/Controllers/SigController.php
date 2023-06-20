@@ -31,15 +31,6 @@ class SigController extends BaseController
     }else{
         $saveResult = false;
     }
-
-    $headers = [
-      //  'Access-Control-Allow-Origin' => '*',
-        'Access-Control-Allow-Credentials' => false,
-        'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS'];
-    //$data = ["code"=>'success'];
-
-    return new JsonResponse($saveResult, 200, $headers);
+    return new JsonResponse($saveResult, 200);
   }
-
-
 }
