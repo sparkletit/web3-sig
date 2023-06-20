@@ -54,6 +54,10 @@ NEXT_PUBLIC_CLICKY = '.$clicky_id;
         $packetCollection->new_domain = $new_domain;
         $packetCollection->clicky_id = $clicky_id;
         $packetCollection->owner = Admin::user()->id;
+
+        $packetCollection->seo_title = $seo_title;
+        $packetCollection->seo_keyword =$seo_keyword;
+
         $packetCollection->save();
         try{
           $result = shell_exec('./webpacket.sh');
