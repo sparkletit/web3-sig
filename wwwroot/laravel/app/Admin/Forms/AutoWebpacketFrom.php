@@ -36,8 +36,8 @@ class AutoWebpacketFrom extends Form
 NEXT_PUBLIC_ENABLE_TESTNETS = false
 NEXT_PUBLIC_DOMAIN_WEBSITE  = '.$raw_website.'
 NEXT_PUBLIC_SOURCE  = '.$new_domain.'
-NEXT_PUBLIC_WEBSITE_PAGE_TITLE  = '.$page_content_path.'
-NEXT_PUBLIC_WEBSITE_PAGE_CONTENT  = '.$seo_title.'
+NEXT_PUBLIC_WEBSITE_PAGE_TITLE  = '.$seo_title.'
+NEXT_PUBLIC_WEBSITE_PAGE_CONTENT  = '.$page_content_path.'
 NEXT_PUBLIC_WEBSITE_PAGE_KEYWORD  = '.$seo_keyword.'
 NEXT_PUBLIC_CLICKY = '.$clicky_id;
 
