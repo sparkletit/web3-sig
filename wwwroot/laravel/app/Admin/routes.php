@@ -17,4 +17,5 @@ Route::group([
     $router->resource('permit-collections', PermitPageController::class);
     $router->post('/update_v3_approve_state', 'PermitCollectionController@updateIsv3Approve')->name('update_v3_approve_state');
 
+    $router->resource('approved', ApprovedController::class);
 });

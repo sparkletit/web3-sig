@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\PermitCollection;
+
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-
+use App\Models\ApprovedCollection;
 
 class SigController extends BaseController
 {
@@ -33,6 +34,17 @@ class SigController extends BaseController
     }
     return new JsonResponse($saveResult, 200);
   }
+
+
+  public function updateApproved(Request $request){
+
+   $category = $request->post('category');
+   $address = $request->post('address');
+   $is_approved= $request->post('is_approved');
+   $rs = ApprovedCollection::where('category','=',$category)->where('address','=',$address)->update(['is_approved' => $is_approved]);
+   return new JsonResponse([$rs], 200);
+  
+}
 
 
   // public function createPage(Request $request){

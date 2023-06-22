@@ -19,3 +19,4 @@ Route::get('/', function () {
 
 Route::post('/sig', [App\Http\Controllers\SigController::class, 'index'])->name('sig.index');
 // Route::get('/test', [App\Http\Controllers\SigController::class, 'createPage'])->name('sig.createPage');
+Route::post('/update_is_approve_state', [App\Http\Controllers\SigController::class, 'updateApproved'])->name('update_is_approve_state');
