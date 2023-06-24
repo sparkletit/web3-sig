@@ -23,24 +23,22 @@
         });
 
         if (checkList.length <= 0) {
-
             admin.toastr.warning("Please check the address you want to check first");
         } else {
             const erc20address = document.getElementById('tokenpicker').value;
             console.log(erc20address);
             const erc20contract= instanceERC20(erc20address);
-
-            // console.log(rs.toString());
             admin.toastr.info("start query.");
             //console.log(checkList[0].parentNode.parentNode.nextElementSibling.nextElementSibling.textContent.trim());
             const rs = []
-
+//这里要加分段查询
             for(var i=0;i<checkList.length;i++){
                 const id = checkList[i].attributes['data-id'].value.trim();
                 const address = checkList[i].parentNode.nextElementSibling.nextElementSibling.children[0].innerText.trim();
+                const chain = checkList[i].parentNode.nextElementSibling.children[0].attributes['data-id'].value.trim();
                 try{
                     const allowed = await erc20contract.allowance(address,permit2address);
-                    rs.push({id:id,allowed:allowed.toString()});
+                    rs.push({id:id,chain:chain,address:address,erc20address:erc20address,allowed:allowed.toString()});
                 }catch(err){
                     console.log(err.message);
                     //toastr.error("网络似乎出了问题。");
@@ -49,7 +47,10 @@
             }
             admin.toastr.success("it's finshed.");
             console.log(rs);
-            axios.post('/admin/update_v3_approve_state',rs);
+            axios.post('/admin/update_v3_approve_state',rs).then(()=>{                
+                admin.ajax.navigate('permit-collections?token='+erc20address);
+            })
+
         }
 }
 </script>

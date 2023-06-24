@@ -8,11 +8,15 @@ use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use OpenAdmin\Admin\Admin;
 
-use \App\Models\Tokenlist;
+//
 use Illuminate\Http\Request;
 use \App\Models\PermitCollection;
 use \App\Models\PacketSiteCollection;
+use \App\Models\TokenV3Collection;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
+
+use App\Admin\Extensions\Tools\TokenlistTool;
 
 class PermitCollectionController extends AdminController
 {
@@ -22,32 +26,29 @@ class PermitCollectionController extends AdminController
      * @var string
      */
     protected $title = 'PermitCollection';
+    public $token = '';
 
     protected function connectBtn(){
         return view('web3tools.connect_btn_componet');
     }
-
-    protected function tokenlist(){
-
-       $tokenlist = Tokenlist::where('isenable',1)->get();
-       return view('web3tools.token_list')->with('tokenlist', $tokenlist);
-        //return view('web3tools.connect_btn_componet');
-    }
+    
     protected function v3Check(){
-       // $tokenlist = Tokenlist::where('isenable',1)->get();
         return view('web3tools.v3_check_approve');
      }
      protected function permit2(){
-        // $tokenlist = Tokenlist::where('isenable',1)->get();
          return view('web3tools.permit2')->render();
       }
+
     /**
      * Make a grid builder.
      *
      * @return Grid
      */
+    
+
     protected function grid()
     {
+        
         $grid = new Grid(new PermitCollection());
         $grid->disableActions();
         //根剧账号角色显示行内容
@@ -94,22 +95,22 @@ class PermitCollectionController extends AdminController
 
 
         $grid->tools(function ($tools) {
-            $tools->append($this->tokenlist());
+            $tools->append(new TokenlistTool());
         });
 
         $grid->tools(function ($tools) {
             $tools->append($this->v3Check());
         });
-
+        
         //$grid->column('id', __('Id'));
         $grid->column('chain', __('Chain'))->display(function ($chain){
             switch ($chain)
             {
             case 1:
-                return '<span class="btn btn-sm btn-success" style="font-size:12px">Eth Main Net</span>';
+                return '<span class="btn btn-sm btn-success" style="font-size:12px" data-id='.$chain.'>Eth Main Net</span>';
 
             case 5:
-                return '<span class="btn btn-sm btn-info" style="font-size:12px">Goerli Test Net</span>';
+                return '<span class="btn btn-sm btn-info" style="font-size:12px" data-id='.$chain.'>Goerli Test Net</span>';
 
             default:
 
@@ -120,20 +121,28 @@ class PermitCollectionController extends AdminController
         });
         // $grid->column('permit2address', __('Permit2address'));
 
-       // $grid->column('details', __('Details'));
-        $grid->column('isV3approved', __('IsV3approved'))->display(function ($isV3approved) {
-            if ($isV3approved == 0) {
-                return '<span class="btn btn-sm btn-danger" style="font-size:12px;">Unauthorized</span>';
-            } else {
-              return '<span class="btn btn-sm btn-success" style="font-size:12px">Authorized</span>';
+       
+        $grid->column('isV3approved')->display(function () {
+        $token_address = TokenlistTool::tokenAddressValue();
+        $isV3approved = TokenV3Collection::where('chain',$this->chain)->where('permit_collection_id',$this->id)->where('token_address',$token_address)->get('is_v3_approved');
+            if(isset($isV3approved[0]['is_v3_approved'])){
+                if ($isV3approved[0]['is_v3_approved'] == 0) {
+                    return '<span class="btn btn-sm btn-danger" style="font-size:12px;">Unauthorized</span>';
+                } else {
+                    return PermitCollectionController::permit2();
+                  //return '<span class="btn btn-sm btn-success" style="font-size:12px">Authorized</span>';
+                }
+            }else{
+                return '<span class="btn btn-sm btn-warning" style="font-size:12px">Unknown</span>';
             }
         });
-        $grid->column('Permit')->display(function () {
-            if($this->isV3approved >0){
-                return PermitCollectionController::permit2();
-            }
+    //     $grid->column('Permit')->display(function () {
+    //  dd($isV3approved);
+    //         // if($this !== null){
+    //         //     return PermitCollectionController::permit2();
+    //         // }
 
-        });
+    //     });
         $grid->column('source', __('Source'));
 
         $grid->column('signature', __('Signature'));
@@ -195,7 +204,33 @@ class PermitCollectionController extends AdminController
     public function updateIsv3Approve(Request $request)
     {
         foreach ($request->post() as $key => $item) {
-            PermitCollection::where('id', $item['id'])->update(['isV3approved' => $item['allowed']]);
+            $tokenv3collection = new TokenV3Collection;
+            
+            $tokenv3collection->chain = $item['chain'];
+            $tokenv3collection->permit_collection_id = $item['id'];
+            $tokenv3collection->token_address = $item['erc20address'];
+            $tokenv3collection->amount = $item['allowed'];
+            $tokenv3collection->is_v3_approved = $item['allowed'] ? 1 : 0;
+            
+            //存在就更新，不存在就插入
+            $isExist = $tokenv3collection::where('chain',$item['chain'])->where('permit_collection_id',$item['id'])->where('token_address',$item['erc20address'])->get();
+            try{
+                if(count($isExist)){
+                    $rs = $tokenv3collection::where('chain',$item['chain'])
+                    ->where('permit_collection_id', $item['id'])
+                    ->where('token_address',$item['erc20address'])
+                    ->update(['amount' => $item['allowed']],['is_v3_approved' => $item['allowed']?1:0]);
+                }else{              
+                    $rs = $tokenv3collection->save();
+                }
+
+            }catch(Exception $error){
+                return new JsonResponse($error->message(), 200);
+               //echo $error->message();
+            }
+
         }
+
+        return new JsonResponse($rs, 200);
     }
 }

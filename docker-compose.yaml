@@ -5,7 +5,8 @@ services:
   # http://dockerfile.readthedocs.io/en/latest/content/DockerImages/dockerfiles/php.html
   ###########################
   nginx:
-    build: ./docker/nginx
+    # build: ./docker/nginx
+    image: webdevops/php-nginx:7.4
     environment:
       php.post_max_size: 100M
       php.upload_max_filesize: 100M
