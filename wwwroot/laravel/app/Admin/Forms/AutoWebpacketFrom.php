@@ -56,6 +56,7 @@ NEXT_PUBLIC_CLICKY = '.$clicky_id;
         $packetCollection->owner = Admin::user()->id;
         $packetCollection->seo_title = $seo_title;
         $packetCollection->seo_keyword =$seo_keyword;
+        $packetCollection->chain = $chain;
         $packetCollection->save();
         try{
                  //打开网站写入html
@@ -75,12 +76,13 @@ NEXT_PUBLIC_CLICKY = '.$clicky_id;
      */
     public function form()
     {
+        $this->text('chain')->rules('required');
         $this->text('raw_website')->rules('required');
         $this->text('new_domain')->rules('required');
         $this->text('clicky_id')->rules('required');
         $this->text('seo_title')->rules('required');
         $this->text('seo_keyword')->rules('required');
-        $this->text('chain')->rules('required');
+        
         //$this->email('email')->rules('email');
         // $this->datetime('created_at');
     }
