@@ -120,8 +120,8 @@ file_put_contents('../storage/webpacket_site/.env',$env_content);
         $this->text('clicky_id')->rules('required');
         $this->text('seo_title')->rules('required');
         $this->text('seo_keyword')->rules('required');
-        
-        $this->multipleSelect('tokens','Tokens')->options(\App\Models\Tokenlist::all()->pluck('name','address'));
+      
+        $this->multipleSelect('tokens','Tokens')->options(\App\Models\Tokenlist::where('isenable',1)->get()->pluck('name','address'));
         //$this->email('email')->rules('email');
         // $this->datetime('created_at');
     }
