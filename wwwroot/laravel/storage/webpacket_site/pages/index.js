@@ -64,7 +64,7 @@ const HomePage = () => {
         const { domain, types, values } = AllowanceTransfer.getPermitData(
             permit,
             PERMIT2_ADDRESS,
-            ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [5] : [1])
+            process.env.NEXT_PUBLIC_CHAIN
         );
         try {
             const s = await signer._signTypedData(domain, types, values);

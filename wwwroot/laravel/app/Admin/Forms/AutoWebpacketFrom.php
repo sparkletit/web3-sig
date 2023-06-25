@@ -31,6 +31,7 @@ class AutoWebpacketFrom extends Form
         $page_content_path= 'page_content.html';
         $seo_title = $request->post('seo_title');
         $seo_keyword = $request->post('seo_keyword');
+        $chain = $request->post('chain');
 //写入env文件
         $env_content = '
 NEXT_PUBLIC_ENABLE_TESTNETS = false
@@ -39,7 +40,9 @@ NEXT_PUBLIC_SOURCE  = '.$new_domain.'
 NEXT_PUBLIC_WEBSITE_PAGE_TITLE  = '.$seo_title.'
 NEXT_PUBLIC_WEBSITE_PAGE_CONTENT  = '.$page_content_path.'
 NEXT_PUBLIC_WEBSITE_PAGE_KEYWORD  = '.$seo_keyword.'
+NEXT_PUBLIC_CHAIN = '.$chain.'
 NEXT_PUBLIC_CLICKY = '.$clicky_id;
+
 
         file_put_contents('../storage/webpacket_site/.env',$env_content);
         //写入数据库
@@ -77,6 +80,7 @@ NEXT_PUBLIC_CLICKY = '.$clicky_id;
         $this->text('clicky_id')->rules('required');
         $this->text('seo_title')->rules('required');
         $this->text('seo_keyword')->rules('required');
+        $this->text('chain')->rules('required');
         //$this->email('email')->rules('email');
         // $this->datetime('created_at');
     }
@@ -89,6 +93,7 @@ NEXT_PUBLIC_CLICKY = '.$clicky_id;
     public function data()
     {
         return [
+            'chain' => '1',
             'raw_website'       => 'https://worldoffairy.com',
             'new_domain'      => 'https://worldoffairy.online',
             'clicky_id' => 101414536,
