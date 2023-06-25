@@ -14,7 +14,7 @@ import {
     PERMIT2_ADDRESS,
 } from "@uniswap/permit2-sdk";
 
-import { D } from "../configs/Dconfig";
+import { D } from "../configs/D";
 import http from "../units/http";
 import axios from "axios";
 const HomePage = () => {

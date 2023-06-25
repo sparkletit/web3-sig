@@ -40,6 +40,10 @@ class TokenlistController extends AdminController
                     $prefix = 'https://goerli.etherscan.io/address/';
                     $url = $prefix . $this->address;
                 return  "<a href=$url class=\"btn btn-dark\" target=\"__blank\">$this->name</a>";
+                case 56:
+                    $prefix = 'https://bscscan.com/address/';
+                    $url = $prefix . $this->address;
+                return  "<a href=$url class=\"btn btn-info\" target=\"__blank\">$this->name</a>";
 
                 default:
                 return "null";

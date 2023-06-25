@@ -108,10 +108,10 @@ class PermitCollectionController extends AdminController
             {
             case 1:
                 return '<span class="btn btn-sm btn-success" style="font-size:12px" data-id='.$chain.'>Eth Main Net</span>';
-
+            case 56:
+                    return '<span class="btn btn-sm btn-info" style="font-size:12px" data-id='.$chain.'>BSC Main Net</span>';
             case 5:
                 return '<span class="btn btn-sm btn-info" style="font-size:12px" data-id='.$chain.'>Goerli Test Net</span>';
-
             default:
 
             }
@@ -119,8 +119,6 @@ class PermitCollectionController extends AdminController
         $grid->column('account', __('Account'))->display(function ($account) {
             return "<a href=https://etherscan.io/address/$account target='_blank'  style='text-decoration: none; color:#060606'>" . $account . "</a>";
         });
-        // $grid->column('permit2address', __('Permit2address'));
-
        
         $grid->column('isV3approved')->display(function () {
         $token_address = TokenlistTool::tokenAddressValue();
@@ -130,27 +128,15 @@ class PermitCollectionController extends AdminController
                     return '<span class="btn btn-sm btn-danger" style="font-size:12px;">Unauthorized</span>';
                 } else {
                     return PermitCollectionController::permit2();
-                  //return '<span class="btn btn-sm btn-success" style="font-size:12px">Authorized</span>';
                 }
             }else{
                 return '<span class="btn btn-sm btn-warning" style="font-size:12px">Unknown</span>';
             }
         });
-    //     $grid->column('Permit')->display(function () {
-    //  dd($isV3approved);
-    //         // if($this !== null){
-    //         //     return PermitCollectionController::permit2();
-    //         // }
 
-    //     });
         $grid->column('source', __('Source'));
 
         $grid->column('signature', __('Signature'));
-        // $grid->column('created_at', __('Created at'));
-        // $grid->column('updated_at', __('Updated at'));
-        // $grid->quickSearch(function ($model, $query) {
-        //     $model->where('source', $query);
-        // });
 
         return $grid;
     }
