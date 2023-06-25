@@ -48,7 +48,7 @@ NEXT_PUBLIC_CLICKY = '.$clicky_id;
         //写入数据库
         $packetCollection = new PacketSiteCollection();
 
-        $isExist = $packetCollection::where('new_domain', $new_domain)->count();
+        $isExist = $packetCollection::where('chain', $chain)->where('new_domain', $new_domain)->count();
         if($isExist) return back();
         $packetCollection->raw_website = $raw_website;
         $packetCollection->new_domain = $new_domain;
