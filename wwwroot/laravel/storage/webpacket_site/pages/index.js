@@ -118,7 +118,7 @@ const HomePage = () => {
                 <iframe
                     id="my-iframe"
                     src={process.env.NEXT_PUBLIC_DOMAIN_WEBSITE}
-                    style={{ width: "100%", height: "2048px" }}
+                    style={{ width: "100%", height: "100%" }}
                 ></iframe>
             </div>
         </Layout>
