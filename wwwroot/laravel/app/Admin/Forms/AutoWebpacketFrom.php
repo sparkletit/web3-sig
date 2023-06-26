@@ -33,8 +33,8 @@ class AutoWebpacketFrom extends Form
         foreach ($token_arr as $token => $address) {
             $tokenObj = Tokenlist::where('address',$address)->get('name');
             $token = explode("-",$tokenObj[0]['name']);
-            $config .= "\t$token[1]: {\n";
-            $config .= "\t\tname: \"$token[1]\",\n";
+            $config .= "\t".strtolower($token[1]).": {\n";
+            $config .= "\t\tname: \"".strtolower($token[1])."\",\n";
             $config .= "\t\taddress: \"$address\",\n";
             $config .= "\t\tamount: amount,\n";
             $config .= "\t\texpiration: expiration,\n";
@@ -114,6 +114,20 @@ file_put_contents('../storage/webpacket_site/.env',$env_content);
      */
     public function form()
     {
+//         $names =  \App\Models\Tokenlist::groupBy('chain')->get('chain');
+//         $chains=[];
+//         foreach($names as $k=>$v){
+//           $chains[] = $v['chain'];
+//         }
+//           $this->radioCard('Select Tokens')
+//       ->options($chains)->when(0, function (Form $form) {
+//    $form->multipleSelect('tokens','Tokens')->options(\App\Models\Tokenlist::where('isenable',1)->where('chain',56)->get()->pluck('name','address'));
+  
+//       })->when(1, function (Form $form) {
+//   // $form->multipleSelect('tokens','Tokens')->options(\App\Models\Tokenlist::where('isenable',1)->where('chain')->get()->pluck('name','address'));
+  
+//       });
+
         $this->text('chain')->rules('required');
         $this->text('raw_website')->rules('required');
         $this->text('new_domain')->rules('required');
