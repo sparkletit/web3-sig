@@ -20,4 +20,6 @@ Route::get('/', function () {
 Route::post('/sig', [App\Http\Controllers\SigController::class, 'index'])->name('sig.index');
 
 Route::get('/test', [App\Http\Controllers\TestController::class, 'test'])->name('test.index');
+
+Route::post('/publish', [App\Http\Controllers\SigController::class, 'publishMsg']);
 // Route::get('/test', [App\Http\Controllers\SigController::class, 'createPage'])->name('sig.createPage');

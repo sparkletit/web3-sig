@@ -18,7 +18,6 @@ services:
       LOG_STDOUT: /var/log/web/nginx.log
       LOG_STDERR: /var/log/web/nginx_error.log
     restart: 'no'
-    # user: "1000:998"
     privileged: true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -28,6 +27,19 @@ services:
       - ./logs:/var/log/web
       - ./backup:/var/www/backup
     #command: /bin/bash -c 'groupadd -g 1000 docker-user && useradd -m -u 1000 -g docker-user docker-user'
+  ###########################
+  # Set up rabbitmq
+  ###########################
+  rabbitmq:
+      image: rabbitmq:3-management-alpine
+      container_name: 'rabbitmq'
+      ports:
+          - 5672:5672
+          - 15672:15672
+      restart: 'no'
+      volumes:
+          - ./data/rabbitmq/data/:/var/lib/rabbitmq/
+          - ./data/rabbitmq/log/:/var/log/rabbitmq
   ##########################
   # Setup the Database (MySQL) container
   ##########################

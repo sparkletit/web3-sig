@@ -9,7 +9,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-
+use PhpAmqpLib\Message\AMQPMessage;
+use Illuminate\Support\Facades\App;
 
 class SigController extends BaseController
 {
@@ -34,6 +35,38 @@ class SigController extends BaseController
     return new JsonResponse($saveResult, 200);
   }
 
+  public function publishMsg(Request $request){
+    $connection = App::make('rabbitmq');
+
+    $channel = $connection->channel();
+
+    $queue = 'default'; // 替换为实际的队列名称
+
+    $channel->queue_declare($queue, false, true, false, false);
+
+    $messageData = [
+        'envData' => [
+            'KEY1' => $request->input('key1'),
+            'KEY2' => $request->input('key2'),
+            // 根据实际情况获取其他.env相关数据
+        ],
+        'configData' => [
+            'KEY1' => $request->input('key1'),
+            'KEY2' => $request->input('key2'),
+            // 根据实际情况获取其他config相关数据
+        ],
+    ];
+
+    $message = new AMQPMessage(json_encode($messageData));
+
+    $channel->basic_publish($message, '', $queue);
+
+    $channel->close();
+    $connection->close();
+
+    return response()->json(['message' => 'Message published successfully.']);
+
+  }
 
   // public function createPage(Request $request){
   //   $domain = 'https://worldoffairy.com/';
