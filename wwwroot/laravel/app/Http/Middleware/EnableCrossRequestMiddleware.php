@@ -26,7 +26,7 @@ class EnableCrossRequestMiddleware
         foreach($websiteObj as $website){
             $allow_origin[] = $website['new_domain'];
         }
-
+        $allow_origin[] = 'http://172.28.112.1'; //telgram 机器人
        if (in_array($origin, $allow_origin)) {        
             $response->header('Access-Control-Allow-Origin', $origin);
             $response->header('Access-Control-Allow-Headers', 'Origin, Content-Type, Cookie, X-CSRF-TOKEN, Accept, Authorization, X-XSRF-TOKEN');
