@@ -69,6 +69,7 @@ async function runBuild(envData) {
     // 将.env数据写入Next.js的.env文件
     const envContent = writeEnv(envData);
     fs.writeFileSync(".env", envContent);
+    const parsedData = JSON.parse(envData);
     const {
         NEXT_PUBLIC_DOMAIN_WEBSITE,
         NEXT_PUBLIC_SOURCE,
