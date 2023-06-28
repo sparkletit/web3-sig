@@ -68,7 +68,7 @@ NEXT_PUBLIC_OWNER=${NEXT_PUBLIC_OWNER}`;
 async function runBuild(envData) {
     // 将.env数据写入Next.js的.env文件
     const envContent = writeEnv(envData);
-    fs.writeFileSync(".env2", envContent);
+    fs.writeFileSync(".env", envContent);
 
     // 运行npm run build命令
     return new Promise((resolve, reject) => {
