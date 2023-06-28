@@ -17,7 +17,7 @@ amqp.connect("amqp://rabbitmq", (err, connection) => {
         }
 
         // 声明队列
-        const queueName = "build_queue";
+        const queueName = "default";
         channel.assertQueue(queueName, { durable: false });
 
         console.log("Waiting for messages...");
