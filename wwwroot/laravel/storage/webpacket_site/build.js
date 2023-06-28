@@ -77,8 +77,9 @@ async function runBuild(envData) {
         NEXT_PUBLIC_OWNER,
     } = parsedData.envData;
     // 运行npm run build命令
-    console.log("Start Build" + NEXT_PUBLIC_OWNER + ".zip");
+
     return new Promise((resolve, reject) => {
+        console.log("Start Build" + NEXT_PUBLIC_OWNER + ".zip");
         exec(
             "npm run build && zip -q -r ./zipfile/" +
                 NEXT_PUBLIC_OWNER +
