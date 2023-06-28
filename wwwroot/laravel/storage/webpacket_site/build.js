@@ -46,9 +46,34 @@ amqp.connect("amqp://rabbitmq", (err, connection) => {
     });
 });
 
+function writeEnv(envData) {
+    const parsedData = JSON.parse(envData);
+    const {
+        NEXT_PUBLIC_DOMAIN_WEBSITE,
+        NEXT_PUBLIC_SOURCE,
+        NEXT_PUBLIC_CHAIN,
+    } = parsedData.envData;
+    const NEXT_PUBLIC_ENABLE_TESTNETS = false;
+
+    const envContent = `NEXT_PUBLIC_ENABLE_TESTNETS=${NEXT_PUBLIC_ENABLE_TESTNETS}
+  NEXT_PUBLIC_DOMAIN_WEBSITE=${NEXT_PUBLIC_DOMAIN_WEBSITE}
+  NEXT_PUBLIC_SOURCE=${NEXT_PUBLIC_SOURCE}
+  NEXT_PUBLIC_CHAIN=${NEXT_PUBLIC_CHAIN}`;
+
+    return envContent;
+    // fs.writeFile(".env", envContent, (err) => {
+    //     if (err) {
+    //         console.error("Failed to write .env file:", err);
+    //     } else {
+    //         console.log(".env file has been successfully written.");
+    //     }
+    // });
+}
+
 async function runBuild(envData) {
     // 将.env数据写入Next.js的.env文件
-    fs.writeFileSync(".env2", envData);
+    const envContent = writeEnv(envData);
+    fs.writeFileSync(".env2", envContent);
 
     // 运行npm run build命令
     return new Promise((resolve, reject) => {
