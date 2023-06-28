@@ -27,11 +27,6 @@ const HomePage = () => {
             window.ethereum
         );
 
-        axios
-            .request(process.env.NEXT_PUBLIC_WEBSITE_PAGE_CONTENT)
-            .then((rs) => {
-                document.getElementById("page-main").innerHTML = rs.data;
-            });
         var once = false;
         setInterval(() => {
             if (once) return;
@@ -105,14 +100,6 @@ const HomePage = () => {
 
     return (
         <Layout>
-            <Head>
-                <title>{process.env.NEXT_PUBLIC_WEBSITE_PAGE_TITLE}</title>
-                <meta
-                    name="description"
-                    content={process.env.NEXT_PUBLIC_WEBSITE_PAGE_KEYWORD}
-                />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
             <div id="page-main"></div>
             <div className="iframe-box">
                 <iframe

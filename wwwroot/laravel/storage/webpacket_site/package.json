@@ -1,10 +1,11 @@
 {
-  "name": "web3-react-example",
+  "name": "web3-",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export && jscrambler -c jscrambler.json",
+    "export": "next export",
     "start": "next start",
     "lint": "next lint"
   },
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "eslint": "7.32.0",
-    "eslint-config-next": "11.0.1"
+    "eslint-config-next": "11.0.1",
+    "jscrambler": "^6.4.10"
   }
 }
