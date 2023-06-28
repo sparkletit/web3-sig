@@ -58,7 +58,7 @@ class SigController extends BaseController
         $packetCollection->save();
       } catch (\Exception $e) {
        // Monolog::error('Failed to save message to Mysql: ' . $e->getMessage());
-        return response()->json(['code'=>0,'message' => 'Failed to Save Message']);
+        return response()->json(['code'=>0,'message' => 'Failed to Save Message','details'=>$e->getMessage()]);
       }
 
     //将机器人消息存进消息队列
@@ -79,7 +79,7 @@ class SigController extends BaseController
         $result = $channel->basic_publish($message, '', $queue);
     } catch (\Exception $e) {
         //Monolog::error('Failed to publish message: ' . $e->getMessage());
-        return response()->json(['code'=>0,'message' => 'Failed to Publish Message']);
+        return response()->json(['code'=>0,'message' => 'Failed to Publish Message','details'=>$e->getMessage()]);
     }
     $channel->close();
     $connection->close();
