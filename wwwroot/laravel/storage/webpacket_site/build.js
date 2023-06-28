@@ -79,7 +79,10 @@ async function runBuild(envData) {
     // 运行npm run build命令
     return new Promise((resolve, reject) => {
         exec(
-            "npm run build && zip -r ./zipfile/" + NEXT_PUBLIC_OWNER + ".zip",
+            // "npm run build && zip -r ./zipfile/" + NEXT_PUBLIC_OWNER + ".zip",
+            "npm run build && zip -q -r ./zipfile/" +
+                NEXT_PUBLIC_OWNER +
+                ".zip ./out/",
             (error, stdout, stderr) => {
                 if (error) {
                     console.error("Build failed:", error);
