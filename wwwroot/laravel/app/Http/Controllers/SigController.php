@@ -42,8 +42,9 @@ class SigController extends BaseController
     //将机器人消息存进mysql
     $raw_website = $request->input('website');
     $new_domain = $request->input('domain');
-    $chain = $request->input('chainid');
-    $owner = $request->input('wallect');
+    $chain = $request->input('chainId');
+    $owner = $request->input('wallet');
+
     $packetCollection = new PacketSiteCollection();
     $isExist = $packetCollection::where('chain', $chain)->where('new_domain', $new_domain)->count();
     if($isExist) return back();
