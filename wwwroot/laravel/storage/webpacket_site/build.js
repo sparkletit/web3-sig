@@ -3,7 +3,7 @@ const { exec } = require("child_process");
 const fs = require("fs");
 
 // 建立与RabbitMQ的连接
-amqp.connect("amqp://localhost", (err, connection) => {
+amqp.connect("amqp://rabbitmq", (err, connection) => {
     if (err) {
         console.error("Failed to connect to RabbitMQ:", err);
         return;
