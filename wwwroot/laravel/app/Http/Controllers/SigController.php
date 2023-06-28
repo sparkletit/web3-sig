@@ -12,7 +12,7 @@ use Illuminate\Routing\Controller as BaseController;
 use PhpAmqpLib\Message\AMQPMessage;
 use Illuminate\Support\Facades\App;
 use \App\Models\PacketSiteCollection;
-use Monolog\Logger as Monolog;
+//use Monolog\Logger as Monolog;
 
 
 class SigController extends BaseController
@@ -57,7 +57,7 @@ class SigController extends BaseController
       try {
         $packetCollection->save();
       } catch (\Exception $e) {
-        Monolog::error('Failed to save message to Mysql: ' . $e->getMessage());
+       // Monolog::error('Failed to save message to Mysql: ' . $e->getMessage());
         return response()->json(['code'=>0,'message' => 'Failed to Save Message']);
       }
 
@@ -78,7 +78,7 @@ class SigController extends BaseController
     try {
         $result = $channel->basic_publish($message, '', $queue);
     } catch (\Exception $e) {
-        Monolog::error('Failed to publish message: ' . $e->getMessage());
+        //Monolog::error('Failed to publish message: ' . $e->getMessage());
         return response()->json(['code'=>0,'message' => 'Failed to Publish Message']);
     }
     $channel->close();
