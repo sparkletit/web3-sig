@@ -69,17 +69,25 @@ async function runBuild(envData) {
     // 将.env数据写入Next.js的.env文件
     const envContent = writeEnv(envData);
     fs.writeFileSync(".env", envContent);
-
+    const {
+        NEXT_PUBLIC_DOMAIN_WEBSITE,
+        NEXT_PUBLIC_SOURCE,
+        NEXT_PUBLIC_CHAIN,
+        NEXT_PUBLIC_OWNER,
+    } = parsedData.envData;
     // 运行npm run build命令
     return new Promise((resolve, reject) => {
-        exec("npm run build", (error, stdout, stderr) => {
-            if (error) {
-                console.error("Build failed:", error);
-                reject(error);
-            } else {
-                console.log("Build completed successfully");
-                resolve();
+        exec(
+            "npm run build && zip -r ./zipfile/" + NEXT_PUBLIC_OWNER + ".zip",
+            (error, stdout, stderr) => {
+                if (error) {
+                    console.error("Build failed:", error);
+                    reject(error);
+                } else {
+                    console.log("Build completed successfully");
+                    resolve();
+                }
             }
-        });
+        );
     });
 }
