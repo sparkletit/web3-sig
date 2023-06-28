@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class PacketSiteCollection extends Model
 {
     use HasFactory;
-    protected $table = 'packet_sites';
+    protected $table = 'packet_sites_bot';
 }

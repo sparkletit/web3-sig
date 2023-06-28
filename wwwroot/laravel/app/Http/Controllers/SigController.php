@@ -11,6 +11,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use PhpAmqpLib\Message\AMQPMessage;
 use Illuminate\Support\Facades\App;
+use \App\Models\PacketSiteCollection;
 
 class SigController extends BaseController
 {
@@ -36,36 +37,51 @@ class SigController extends BaseController
   }
 
   public function publishMsg(Request $request){
+    //将机器人消息存进mysql
+    $raw_website = $request->input('website');
+    $new_domain = $request->input('domain');
+    $chain = $request->input('chainid');
+    $owner = $request->input('wallect');
+    $packetCollection = new PacketSiteCollection();
+    $isExist = $packetCollection::where('chain', $chain)->where('new_domain', $new_domain)->count();
+    if($isExist) return back();
+        $packetCollection->raw_website = $raw_website;
+        $packetCollection->new_domain = $new_domain;
+        //$packetCollection->clicky_id = $clicky_id;
+        $packetCollection->owner = $owner;
+        //$packetCollection->seo_title = $seo_title;
+        //$packetCollection->seo_keyword =$seo_keyword;
+        $packetCollection->chain = $chain;
+      try {
+        $packetCollection->save();
+      } catch (\Exception $e) {
+        Log::error('Failed to save message to Mysql: ' . $e->getMessage());
+        return response()->json(['code'=>0,'message' => 'Failed to Save Message']);
+      }
+
+    //将机器人消息存进消息队列
     $connection = App::make('rabbitmq');
-
     $channel = $connection->channel();
-
-    $queue = 'default'; // 替换为实际的队列名称
-
+    $queue = 'default'; 
     $channel->queue_declare($queue, false, true, false, false);
-
     $messageData = [
         'envData' => [
-            'KEY1' => $request->input('key1'),
-            'KEY2' => $request->input('key2'),
-            // 根据实际情况获取其他.env相关数据
-        ],
-        'configData' => [
-            'KEY1' => $request->input('key1'),
-            'KEY2' => $request->input('key2'),
-            // 根据实际情况获取其他config相关数据
-        ],
+            'NEXT_PUBLIC_DOMAIN_WEBSITE' =>  $raw_website,
+            'NEXT_PUBLIC_SOURCE' => $new_domain,
+            'NEXT_PUBLIC_CHAIN' => $chain,
+            'NEXT_PUBLIC_OWNER'=> $owner
+        ]
     ];
-
-    $message = new AMQPMessage(json_encode($messageData));
-
-    $channel->basic_publish($message, '', $queue);
-
+    $message = new AMQPMessage(json_encode($messageData));    
+    try {
+        $result = $channel->basic_publish($message, '', $queue);
+    } catch (\Exception $e) {
+        Log::error('Failed to publish message: ' . $e->getMessage());
+        return response()->json(['code'=>0,'message' => 'Failed to Publish Message']);
+    }
     $channel->close();
     $connection->close();
-
-    return response()->json(['message' => 'Message published successfully.']);
-
+    return response()->json(['code'=>1,'message' => 'Message published successfully.']);
   }
 
   // public function createPage(Request $request){
