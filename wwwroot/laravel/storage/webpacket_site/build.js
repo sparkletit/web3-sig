@@ -36,13 +36,6 @@ amqp.connect("amqp://rabbitmq", (err, connection) => {
                 .then(() => {
                     // 构建完成后，确认消息已处理
                     channel.ack(msg);
-                    // const parsedData = JSON.parse(envData);
-                    // const {
-                    //     NEXT_PUBLIC_DOMAIN_WEBSITE,
-                    //     NEXT_PUBLIC_SOURCE,
-                    //     NEXT_PUBLIC_CHAIN,
-                    //     NEXT_PUBLIC_OWNER,
-                    // } = parsedData.envData;
                 })
                 .catch((error) => {
                     // 发生错误，可以选择重新将消息放回队列等待重试
