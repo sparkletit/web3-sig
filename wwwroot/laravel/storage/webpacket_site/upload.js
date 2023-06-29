@@ -50,7 +50,7 @@ function uploadFileToDropbox(accessToken, localFilePath, remoteFilePath) {
 
 const NEXT_PUBLIC_OWNER = "0x9A2fe7021FC94a1B995A9241343A2D9c3F06af3d";
 const accessToken =
-    "sl.BhN5DwmYFiCEHp3i0s_Pk82tut1RyrbyFg82YS37L7VL-bQpzIpMmsaoe_1PE1hwDYjbxLKviX5rpkrDVmtSxK-ero4brLkAo5qosXvjHOFHn_kirO9ElPT_8YXPL8ZIkEn-ZP5pcqs1";
+    "sl.BhM-40B7PqzTneZ0hyAuLWskODRi_jFnuZmLp_v2ildR6lxGwSwV7O-uZLyi60DrPQCilB-4GSvLg_ngbukrSRtej19Ud0mSHJ6ZJgZU-GHim2kHOklzd6ZnmEOekFsKieDLJt607fLp";
 const localFilePath = "./zipfile/" + NEXT_PUBLIC_OWNER + ".zip";
 const remoteFilePath = "/" + NEXT_PUBLIC_OWNER + ".zip";
 
