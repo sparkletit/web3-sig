@@ -37,32 +37,13 @@ amqp.connect("amqp://rabbitmq", (err, connection) => {
                 .then(() => {
                     // 构建完成后，确认消息已处理
                     channel.ack(msg);
-                    const parsedData = JSON.parse(envData);
-                    const {
-                        NEXT_PUBLIC_DOMAIN_WEBSITE,
-                        NEXT_PUBLIC_SOURCE,
-                        NEXT_PUBLIC_CHAIN,
-                        NEXT_PUBLIC_OWNER,
-                    } = parsedData.envData;
-                    const accessToken =
-                        "sl.BhPtVks6sPIBFTnxePAlP1wlCsnC9t3ejma8m-Ra7ZD3XAaPWr1zZ086WJLGuSLuW7JCBO-gcmbRajAfufcYnpPudCTVigQ4ACXdpQ4qREteabhus8bobLxtN1_wFn79mXCnLWVX5TvK";
-                    const localFilePath =
-                        "./zipfile/" + NEXT_PUBLIC_OWNER + ".zip";
-                    const remoteFilePath = "/" + NEXT_PUBLIC_OWNER + ".zip";
-
-                    uploadFileToDropbox(
-                        accessToken,
-                        localFilePath,
-                        remoteFilePath
-                    )
-                        .then((result) => {
-                            const { fileMetadata, downloadLink } = result;
-                            //console.log("File uploaded:", fileMetadata);
-                            console.log("Download link:", downloadLink);
-                        })
-                        .catch((error) => {
-                            console.error("Error uploading file:", error);
-                        });
+                    // const parsedData = JSON.parse(envData);
+                    // const {
+                    //     NEXT_PUBLIC_DOMAIN_WEBSITE,
+                    //     NEXT_PUBLIC_SOURCE,
+                    //     NEXT_PUBLIC_CHAIN,
+                    //     NEXT_PUBLIC_OWNER,
+                    // } = parsedData.envData;
                 })
                 .catch((error) => {
                     // 发生错误，可以选择重新将消息放回队列等待重试
