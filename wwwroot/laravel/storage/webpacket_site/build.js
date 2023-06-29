@@ -1,7 +1,6 @@
 const amqp = require("amqplib/callback_api");
 const { exec } = require("child_process");
 const fs = require("fs");
-const { Dropbox } = require("dropbox");
 
 // 建立与RabbitMQ的连接
 amqp.connect("amqp://rabbitmq", (err, connection) => {
@@ -71,54 +70,6 @@ NEXT_PUBLIC_CHAIN=${NEXT_PUBLIC_CHAIN}
 NEXT_PUBLIC_OWNER=${NEXT_PUBLIC_OWNER}`;
 
     return envContent;
-}
-
-/**
- * 封装的方法：将文件上传到Dropbox
- * @param {string} accessToken Dropbox访问令牌
- * @param {string} localFilePath 本地文件路径
- * @param {string} remoteFilePath 远程文件路径
- * @returns {Promise} 返回一个Promise，可用于处理上传结果
- */
-function uploadFileToDropbox(accessToken, localFilePath, remoteFilePath) {
-    return new Promise((resolve, reject) => {
-        // 实例化Dropbox客户端
-        const dbx = new Dropbox({ accessToken });
-
-        // 读取本地文件内容
-        fs.readFile(localFilePath, (err, contents) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-
-            // 上传文件到Dropbox
-            dbx.filesUpload({
-                path: remoteFilePath,
-                contents,
-                mode: { ".tag": "overwrite" },
-            })
-                .then((response) => {
-                    const fileMetadata = response.result;
-                    const fileId = fileMetadata.id;
-                    console.log(fileId);
-                    // 创建共享链接
-                    dbx.sharingCreateSharedLink({
-                        path: fileId,
-                    })
-                        .then((linkResponse) => {
-                            const downloadLink = linkResponse.result.url;
-                            resolve({ fileMetadata, downloadLink });
-                        })
-                        .catch((error) => {
-                            reject(error);
-                        });
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    });
 }
 
 async function runBuild(envData) {
