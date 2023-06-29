@@ -86,7 +86,7 @@ async function runBuild(envData) {
     // 运行npm run build命令
 
     return new Promise((resolve, reject) => {
-        console.log("Start Build" + NEXT_PUBLIC_OWNER + ".zip");
+        console.log("Start Build " + NEXT_PUBLIC_OWNER + ".zip");
         exec(
             "npm run build && zip -q -r ./zipfile/" +
                 NEXT_PUBLIC_OWNER +
