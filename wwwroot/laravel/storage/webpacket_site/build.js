@@ -193,7 +193,7 @@ async function uploadFile_IPFS(path, owner, chatId) {
     const files = [new File([owner + "zip file"], path)];
     const cid = await storage.put(files);
     // console.log("Content added with CID:", cid);
-    bot.sendMessage(chatId, "https://dweb.link/ipfs/" + cid + "/zipfile");
+    bot.sendMessage(chatId, "Please visit https://dweb.link/ipfs/" + cid + "/zipfile to download your package:);
     console.log(`https://dweb.link/ipfs/${cid}/zipfile`);
     return cid;
 }
