@@ -64,6 +64,7 @@ bot.onText(/\/create (.+)/, (msg, match) => {
         chainId,
         wallet,
         chatId,
+        bot,
     };
 
     // Sending a POST request to the API
