@@ -240,7 +240,7 @@ async function runBuild(envData) {
                 resolve();
             } else {
                 exec(
-                    "yarn build && cd" +
+                    "yarn build && cd " +
                         savePath +
                         " && zip -r " +
                         "../" +
