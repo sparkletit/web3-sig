@@ -237,7 +237,7 @@ async function runBuild(envData) {
                 resolve();
             } else {
                 exec(
-                    "yarn build && zip -q -r" + saveFilePath + " ./out/",
+                    "yarn build && zip -q -r " + saveFilePath + " ./out/",
                     (error, stdout, stderr) => {
                         if (error) {
                             console.error("Build failed:", error);
