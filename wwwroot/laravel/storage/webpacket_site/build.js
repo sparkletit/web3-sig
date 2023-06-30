@@ -234,7 +234,7 @@ async function runBuild(envData) {
         exec(
             "mkdir " +
                 savePath +
-                "&& yarn build && zip -q -r" +
+                " && yarn build && zip -q -r" +
                 saveFilePath +
                 " ./out/",
             (error, stdout, stderr) => {
