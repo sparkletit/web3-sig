@@ -240,6 +240,7 @@ async function runBuild(envData) {
                 resolve();
             } else {
                 exec(
+                    //打包
                     "yarn build && zip -q -r -j -d " + saveFilePath + " ./out/",
                     (error, stdout, stderr) => {
                         if (error) {
