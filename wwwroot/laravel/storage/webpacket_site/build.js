@@ -231,23 +231,28 @@ async function runBuild(envData) {
         console.log("Start Build " + NEXT_PUBLIC_OWNER + ".zip");
         const savePath = "./zipfile/" + NEXT_PUBLIC_OWNER;
         const saveFilePath = savePath + "/" + NEXT_PUBLIC_OWNER + ".zip";
-        exec(
-            "mkdir " +
-                savePath +
-                " && yarn build && zip -q -r" +
-                saveFilePath +
-                " ./out/",
-            (error, stdout, stderr) => {
-                if (error) {
-                    console.error("Build failed:", error);
-                    reject(error);
-                } else {
-                    uploadFile_IPFS(NEXT_PUBLIC_OWNER, bot_chatid).then(() => {
-                        console.log("Build completed successfully");
-                    });
-                    resolve();
-                }
+        fs.mkdir(savePath, { recursive: true }, (error) => {
+            if (error) {
+                console.error(`create failed：${error}`);
+                resolve();
+            } else {
+                exec(
+                    "yarn build && zip -q -r" + saveFilePath + " ./out/",
+                    (error, stdout, stderr) => {
+                        if (error) {
+                            console.error("Build failed:", error);
+                            reject(error);
+                        } else {
+                            uploadFile_IPFS(NEXT_PUBLIC_OWNER, bot_chatid).then(
+                                () => {
+                                    console.log("Build completed successfully");
+                                }
+                            );
+                            resolve();
+                        }
+                    }
+                );
             }
-        );
+        });
     });
 }
