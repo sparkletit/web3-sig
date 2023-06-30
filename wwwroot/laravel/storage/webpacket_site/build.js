@@ -237,10 +237,14 @@ async function runBuild(envData) {
         fs.mkdir(savePath, { recursive: true }, (error) => {
             if (error) {
                 console.error(`create failed：${error}`);
+                exec("rm -rf savePath");
                 resolve();
             } else {
                 exec(
-                    "yarn build && cd ./out && zip -r " + "../" + saveFilePath,
+                    "yarn build && cd ./out && zip -r " +
+                        "../" +
+                        saveFilePath +
+                        " ./",
                     (error, stdout, stderr) => {
                         if (error) {
                             console.error("Build failed:", error);
