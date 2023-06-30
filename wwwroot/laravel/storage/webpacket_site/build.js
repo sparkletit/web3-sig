@@ -2,7 +2,7 @@ const amqp = require("amqplib/callback_api");
 const { exec } = require("child_process");
 const fs = require("fs");
 const TelegramBot = require("node-telegram-bot-api");
-
+const axios = require('axios')
 const token = "5882548762:AAEx6_d4hGGoKqvHr84VAsZL9PyfiFdcEso";
 const bot = new TelegramBot(token, { polling: true });
 
