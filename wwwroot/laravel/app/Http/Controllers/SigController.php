@@ -48,7 +48,10 @@ class SigController extends BaseController
 
     $packetCollection = new PacketSiteCollection();
     $isExist = $packetCollection::where('chain', $chain)->where('new_domain', $new_domain)->count();
-    if($isExist) return back();
+    if($isExist) {
+      return response()->json(['code'=>101,'message' => 'data already exists']);
+      //return back();
+    }
         $packetCollection->raw_website = $raw_website;
         $packetCollection->new_domain = $new_domain;
         //$packetCollection->clicky_id = $clicky_id;

@@ -76,6 +76,8 @@ bot.onText(/\/create (.+)/, (msg, match) => {
                     chatId,
                     `Message result: ${result.message} ,please wait patiently for the system to generate the site.`
                 );
+            } else if (result.code == 101) {
+                bot.sendMessage(chatId, `This site already exists.`);
             } else {
                 bot.sendMessage(
                     chatId,
