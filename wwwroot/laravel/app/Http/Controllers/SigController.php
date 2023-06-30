@@ -45,7 +45,6 @@ class SigController extends BaseController
     $chain = $request->input('chainId');
     $owner = $request->input('wallet');
     $bot_chatid = $request->input('chatId');
-    $bot = $request->input('bot');
 
     $packetCollection = new PacketSiteCollection();
     $isExist = $packetCollection::where('chain', $chain)->where('new_domain', $new_domain)->count();
@@ -77,8 +76,7 @@ class SigController extends BaseController
             'NEXT_PUBLIC_OWNER'=> $owner
         ],
         'chatData' =>[
-          'bot_chatid' => $bot_chatid,
-          'bot'=>$bot
+          'bot_chatid' => $bot_chatid
         ]
     ];
     $message = new AMQPMessage(json_encode($messageData));    
