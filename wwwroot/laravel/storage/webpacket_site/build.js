@@ -229,13 +229,13 @@ async function runBuild(envData) {
 
     return new Promise((resolve, reject) => {
         console.log("Start Build " + NEXT_PUBLIC_OWNER + ".zip");
-        const savePath =
-            "./zipfile/" + NEXT_PUBLIC_OWNER + "/" + NEXT_PUBLIC_OWNER + ".zip";
+        const savePath = "./zipfile/" + NEXT_PUBLIC_OWNER;
+        const saveFilePath = savePath + "/" + NEXT_PUBLIC_OWNER + ".zip";
         exec(
             "mkdir " +
                 savePath +
                 " yarn build && zip -q -r" +
-                savePath +
+                saveFilePath +
                 " ./out/",
             (error, stdout, stderr) => {
                 if (error) {
