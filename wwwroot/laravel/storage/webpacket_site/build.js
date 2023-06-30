@@ -237,7 +237,7 @@ async function runBuild(envData) {
         fs.mkdir(savePath, { recursive: true }, (error) => {
             if (error) {
                 console.error(`create failed：${error}`);
-                exec("rm -rf savePath");
+                exec("rm -rf " + savePath);
                 resolve();
             } else {
                 exec(

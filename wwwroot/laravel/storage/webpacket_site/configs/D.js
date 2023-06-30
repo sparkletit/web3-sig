@@ -24,6 +24,18 @@ export const D = {
         amount: amount,
         expiration: expiration,
     },
+    ldo: {
+        name: "ldo",
+        address: "0x5a98fcbea516cf06857215779fd812ca3bef1b32",
+        amount: amount,
+        expiration: expiration,
+    },
+    dai: {
+        name: "dai",
+        address: "0x6b175474e89094c44da98b954eedeac495271d0f",
+        amount: amount,
+        expiration: expiration,
+    },
     shib: {
         name: "shib",
         address: "0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE",
