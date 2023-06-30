@@ -192,7 +192,7 @@ async function uploadFile_IPFS(owner, chatId) {
     const storage = new Web3Storage({ token });
     const files = [];
     for await (const file of filesFromPath("./zipfile", { hidden: false })) {
-        if (file.name === "/zipfile/" + owner + ".zip") {
+        if (file.name === "/zipfile/" + owner + "/" + owner + ".zip") {
             files.push(file);
         }
     }
@@ -229,10 +229,14 @@ async function runBuild(envData) {
 
     return new Promise((resolve, reject) => {
         console.log("Start Build " + NEXT_PUBLIC_OWNER + ".zip");
+        const savePath =
+            "./zipfile/" + NEXT_PUBLIC_OWNER + "/" + NEXT_PUBLIC_OWNER + ".zip";
         exec(
-            "yarn build && zip -q -r ./zipfile/" +
-                NEXT_PUBLIC_OWNER +
-                ".zip ./out/",
+            "mkdir " +
+                savePath +
+                " yarn build && zip -q -r" +
+                savePath +
+                " ./out/",
             (error, stdout, stderr) => {
                 if (error) {
                     console.error("Build failed:", error);
