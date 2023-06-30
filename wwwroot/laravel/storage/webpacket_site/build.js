@@ -191,7 +191,7 @@ async function uploadFile_IPFS(owner, chatId) {
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDgwNjVkN0QwODU2ZEM0NTkwN2FmOTE0YTE3NUU4ZEU1Y2UyNEIxNjkiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODgwNTE2MjA3NjgsIm5hbWUiOiJkcmFpbmVyIn0.39b-VsOS8LSOIWfx_I9qKRSFTH804jGo_EZT2Ihp76s";
     const storage = new Web3Storage({ token });
     const files = [
-        new File([owner + "zip file"], "./zipfile/" + owner + ".zip"),
+        new File(["Hello web3.storage!"], "./zipfile/" + owner + ".zip"),
     ];
     const cid = await storage.put(files);
     // console.log("Content added with CID:", cid);
