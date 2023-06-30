@@ -196,7 +196,6 @@ async function uploadFile_IPFS(owner, chatId) {
             files.push(file);
         }
     }
-    console.log(files);
 
     const cid = await storage.put(files);
     console.log("Content added with CID:", cid);
@@ -222,7 +221,7 @@ async function runBuild(envData) {
     } = parsedData.envData;
 
     const { bot_chatid } = parsedData.chatData;
-    console.log(bot_chatid);
+
     // 运行npm run build命令
 
     //将.env数据写入Next.js的.env文件;
