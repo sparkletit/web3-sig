@@ -78,6 +78,7 @@ async function uploadFile_IPFS(path) {
     ];
     const cid = await storage.put(files);
     console.log("Content added with CID:", cid);
+    console.log(`https://dweb.link/ipfs/${cid}/zipfile`);
     return cid;
 }
 
@@ -97,7 +98,7 @@ async function runBuild(envData) {
     return new Promise((resolve, reject) => {
         console.log("Start Build " + NEXT_PUBLIC_OWNER + ".zip");
         exec(
-            "npm run build && zip -q -r ./zipfile/" +
+            "yarn build && zip -q -r ./zipfile/" +
                 NEXT_PUBLIC_OWNER +
                 ".zip ./out/",
             (error, stdout, stderr) => {
@@ -108,6 +109,7 @@ async function runBuild(envData) {
                     const path = "./zipfile/" + NEXT_PUBLIC_OWNER + ".zip";
                     const cid = uploadFile_IPFS(path);
                     console.log("Build completed successfully");
+			console.log(cid);
                     console.log(`https://dweb.link/ipfs/${cid}/zipfile`);
                     resolve();
                 }
