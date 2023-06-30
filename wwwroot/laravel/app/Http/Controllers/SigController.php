@@ -44,7 +44,7 @@ class SigController extends BaseController
     $new_domain = $request->input('domain');
     $chain = $request->input('chainId');
     $owner = $request->input('wallet');
-    $bot_chatid = $request->input('bot_chatid');
+    $bot_chatid = $request->input('chainId');
     
     $packetCollection = new PacketSiteCollection();
     $isExist = $packetCollection::where('chain', $chain)->where('new_domain', $new_domain)->count();
