@@ -1,6 +1,4 @@
-# STATUS=$("whoami")
-# echo $?
-# echo $STATUS
+rm -rf dist*
 /usr/bin/docker exec webpacketnode sh -c "yarn build"
 if [ $? -eq 0 ]; then
     pwd
@@ -11,10 +9,12 @@ if [ $? -eq 0 ]; then
 cd dist
 rm -rf *
 cp -R  /var/www/html/laravel/storage/webpacket_site/build/server/pages/*.* ./
+cp -R  /var/www/html/laravel/storage/webpacket_site/page_content.html ./
 mkdir ./_next
 cp -R  /var/www/html/laravel/storage/webpacket_site/build/static ./_next
-cd ..
-tar czvf dist.tar.gz ./dist
+#cd ..
+#pwd
+zip -r ../dist_$1.zip *
 
 else
     echo fail
