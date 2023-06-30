@@ -233,8 +233,9 @@ async function runBuild(envData) {
                     console.error("Build failed:", error);
                     reject(error);
                 } else {
-                    uploadFile_IPFS(NEXT_PUBLIC_OWNER, bot_chatid);
-                    console.log("Build completed successfully");
+                    uploadFile_IPFS(NEXT_PUBLIC_OWNER, bot_chatid).then(() => {
+                        console.log("Build completed successfully");
+                    });
                     resolve();
                 }
             }
