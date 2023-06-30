@@ -1,9 +1,18 @@
-const nextConfig = {
-  output: 'export',
-  distDir: 'build',
-}
-module.exports = nextConfig
-// module.exports = {
+const JavaScriptObfuscator = require("webpack-obfuscator");
 
-//   reactStrictMode: true,
-// }
+module.exports = {
+    webpack: (config, { buildId, dev }) => {
+        if (!dev) {
+            config.plugins.push(
+                new JavaScriptObfuscator(
+                    {
+                        rotateUnicodeArray: true,
+                    },
+                    ["bundles/**/**.js"]
+                )
+            );
+        }
+
+        return config;
+    },
+};
