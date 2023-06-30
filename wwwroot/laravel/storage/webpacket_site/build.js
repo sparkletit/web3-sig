@@ -204,7 +204,9 @@ async function uploadFile_IPFS(owner, chatId) {
         "Please visit https://dweb.link/ipfs/" +
             cid +
             "/zipfile/" +
-            cid +
+            owner +
+            "/" +
+            owner +
             ".zip to download your package"
     );
     console.log(`https://dweb.link/ipfs/${cid}/zipfile`);
