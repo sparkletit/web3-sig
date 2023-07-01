@@ -5,19 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\PermitCollection;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use PhpAmqpLib\Message\AMQPMessage;
 use Illuminate\Support\Facades\App;
 use \App\Models\PacketSiteCollection;
-//use Monolog\Logger as Monolog;
-
-
 class SigController extends BaseController
 {
-
   public function index(Request $request)
   {
   // 创建一个新的 SigCollection 实例并设置属性值
@@ -51,16 +44,11 @@ class SigController extends BaseController
     if($isExist) return new JsonResponse(['code'=>101,'message' => 'already exist.'], 200,['encoding' => 'utf-8']);
         $packetCollection->raw_website = $raw_website;
         $packetCollection->new_domain = $new_domain;
-        //$packetCollection->clicky_id = $clicky_id;
         $packetCollection->owner = $owner;
-        //$packetCollection->seo_title = $seo_title;
-        //$packetCollection->seo_keyword =$seo_keyword;
         $packetCollection->chain = $chain;
       try {
         $packetCollection->save();
       } catch (\Exception $e) {
-       // Monolog::error('Failed to save message to Mysql: ' . $e->getMessage());
-       // return response()->json(['code'=>0,'message' => 'Failed to Save Message','details'=>$e->getMessage()]);
         return new JsonResponse(['code'=>0,'message' => 'Failed to Save Message','details'=>$e->getMessage()], 200,['encoding' => 'utf-8']);
       }
 
@@ -84,10 +72,8 @@ class SigController extends BaseController
     try {
         $result = $channel->basic_publish($message, '', $queue);
     } catch (\Exception $e) {
-        //Monolog::error('Failed to publish message: ' . $e->getMessage());
         $channel->close();
         $connection->close();
-        // return response()->json(['code'=>0,'message' => 'Failed to Publish Message','details'=>$e->getMessage()]);
         return new JsonResponse(['code'=>0,'message' => 'Failed to Publish Message','details'=>$e->getMessage()], 200,['encoding' => 'utf-8']);
     }
     $channel->close();
@@ -96,10 +82,4 @@ class SigController extends BaseController
    // return response()->json(['code'=>1,'message' => 'Message published successfully.']);
   }
 
-  // public function createPage(Request $request){
-  //   $domain = 'https://worldoffairy.com/';
-  //   $html_data = file_get_contents($domain);
-  //   file_put_contents('../storage/webpacket_site/page_content.html',$html_data);
-  //   echo $html_data;
-  // }
 }
