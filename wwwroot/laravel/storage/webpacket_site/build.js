@@ -70,13 +70,16 @@ bot.onText(/\/create (.+)/, (msg, match) => {
     axios
         .post(apiUrl, payload)
         .then((response) => {
+
             const result = response.data;
-            console.log(result.code);
+                console.log(result.code);
             if (result.code == 1) {
                 bot.sendMessage(
                     chatId,
                     `Message result: ${result.message} ,please wait patiently for the system to generate the site.`
                 );
+            } else if (result.code == 101) {
+                bot.sendMessage(chatId, `This site already exists.`);
             } else {
                 bot.sendMessage(
                     chatId,
