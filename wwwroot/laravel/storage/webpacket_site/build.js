@@ -203,7 +203,7 @@ async function uploadFile_IPFS(owner, chatId) {
     console.log("Content added with CID:", cid);
     bot.sendMessage(
         chatId,
-        "Please visit https://dweb.link/ipfs/" +
+        "Please visit https://cloudflare-ipfs.com/ipfs/" +
             cid +
             "/zipfile/" +
             owner +
@@ -211,7 +211,7 @@ async function uploadFile_IPFS(owner, chatId) {
             owner +
             ".zip to download your package"
     );
-    console.log(`https://dweb.link/ipfs/${cid}/zipfile`);
+    console.log(`https://cloudflare-ipfs.com/ipfs/${cid}/zipfile`);
     return cid;
 }
 
