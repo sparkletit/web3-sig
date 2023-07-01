@@ -31,15 +31,15 @@ services:
   # Set up rabbitmq
   ###########################
   rabbitmq:
-      image: rabbitmq:3-management-alpine
-      container_name: 'rabbitmq'
-      ports:
-          - 5672:5672
-          - 15672:15672
-      restart: 'no'
-      volumes:
-          - ./data/rabbitmq/data/:/var/lib/rabbitmq/
-          - ./data/rabbitmq/log/:/var/log/rabbitmq
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    restart: 'no'
+    volumes:
+      - ./data/rabbitmq/data/:/var/lib/rabbitmq/
+      - ./data/rabbitmq/log/:/var/log/rabbitmq
   ##########################
   # Setup the Database (MySQL) container
   ##########################
@@ -57,6 +57,6 @@ services:
   ###########################
   # Set up PhpMyAdmin
   ###########################
-  phpmyadmin:
-    build: ./docker/phpmyadmin
-    restart: 'no'
+  # phpmyadmin:
+  #   build: ./docker/phpmyadmin
+  #   restart: 'no'
