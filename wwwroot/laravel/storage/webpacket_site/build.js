@@ -57,7 +57,8 @@ bot.onText(/\/create (.+)/, (msg, match) => {
     }
 
     // Parameters validation passed, sending to API endpoint
-    const apiUrl = "https://psyop.guru/publish";
+    //const apiUrl = "https://psyop.guru/publish";
+    const apiUrl = "http://103.213.247.16/publish";
     const payload = {
         website,
         domain,
@@ -70,6 +71,8 @@ bot.onText(/\/create (.+)/, (msg, match) => {
         url: apiUrl,
         headers: {
             "Content-Type": "application/json",
+            "Encoding":"utf-8",
+            "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
         },
         data: payload,
     };
@@ -77,13 +80,13 @@ bot.onText(/\/create (.+)/, (msg, match) => {
     axios(config)
         // .post(apiUrl, payload)
         .then((response) => {
+      //    console.log(response);
             const result = response.data;
-            console.log(result.code);
 
             if (result.code == 1) {
                 bot.sendMessage(
                     chatId,
-                    `Message result: ${result.message} ,please wait patiently for the system to generate the site.`
+                    `Message result: ${result.message} please wait patiently for the system to generate the site.`
                 );
             } else if (result.code == 101) {
                 bot.sendMessage(chatId, `This site already exists.`);
@@ -216,9 +219,7 @@ async function uploadFile_IPFS(owner, chatId) {
             cid +
             "/zipfile/" +
             owner +
-            "/" +
-            owner +
-            ".zip to download your package"
+            " to download your package."
     );
     console.log(`https://cloudflare-ipfs.com/ipfs/${cid}/zipfile`);
     return cid;
