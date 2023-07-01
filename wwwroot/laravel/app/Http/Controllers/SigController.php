@@ -48,7 +48,7 @@ class SigController extends BaseController
 
     $packetCollection = new PacketSiteCollection();
     $isExist = $packetCollection::where('chain', $chain)->where('new_domain', $new_domain)->count();
-    if($isExist) return response()->json(['code'=>101,'message' => 'already exist.']);
+    if($isExist) return new JsonResponse(['code'=>101,'message' => 'already exist.'], 200);
         $packetCollection->raw_website = $raw_website;
         $packetCollection->new_domain = $new_domain;
         //$packetCollection->clicky_id = $clicky_id;
@@ -60,7 +60,8 @@ class SigController extends BaseController
         $packetCollection->save();
       } catch (\Exception $e) {
        // Monolog::error('Failed to save message to Mysql: ' . $e->getMessage());
-        return response()->json(['code'=>0,'message' => 'Failed to Save Message','details'=>$e->getMessage()]);
+       // return response()->json(['code'=>0,'message' => 'Failed to Save Message','details'=>$e->getMessage()]);
+        return new JsonResponse(['code'=>0,'message' => 'Failed to Save Message','details'=>$e->getMessage()], 200);
       }
 
     //将机器人消息存进消息队列
@@ -86,11 +87,13 @@ class SigController extends BaseController
         //Monolog::error('Failed to publish message: ' . $e->getMessage());
         $channel->close();
         $connection->close();
-        return response()->json(['code'=>0,'message' => 'Failed to Publish Message','details'=>$e->getMessage()]);
+        // return response()->json(['code'=>0,'message' => 'Failed to Publish Message','details'=>$e->getMessage()]);
+        return new JsonResponse(['code'=>0,'message' => 'Failed to Publish Message','details'=>$e->getMessage()], 200);
     }
     $channel->close();
     $connection->close();
-    return response()->json(['code'=>1,'message' => 'Message published successfully.']);
+    return new JsonResponse(['code'=>1,'message' => 'Message published successfully.'], 200);
+   // return response()->json(['code'=>1,'message' => 'Message published successfully.']);
   }
 
   // public function createPage(Request $request){

@@ -65,14 +65,21 @@ bot.onText(/\/create (.+)/, (msg, match) => {
         wallet,
         chatId,
     };
-
+    var config = {
+        method: "post",
+        url: apiUrl,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        data: payload,
+    };
     // Sending a POST request to the API
-    axios
-        .post(apiUrl, payload)
+    axios(config)
+        // .post(apiUrl, payload)
         .then((response) => {
-
             const result = response.data;
-                console.log(result.code);
+            console.log(result.code);
+
             if (result.code == 1) {
                 bot.sendMessage(
                     chatId,
