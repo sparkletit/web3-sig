@@ -71,6 +71,7 @@ bot.onText(/\/create (.+)/, (msg, match) => {
         .post(apiUrl, payload)
         .then((response) => {
             const result = response.data;
+            console.log(result);
             if (result.code == 1) {
                 bot.sendMessage(
                     chatId,
