@@ -48,9 +48,7 @@ class SigController extends BaseController
 
     $packetCollection = new PacketSiteCollection();
     $isExist = $packetCollection::where('chain', $chain)->where('new_domain', $new_domain)->count();
-    if($isExist) {
-      return back();
-    }
+    if($isExist) return back();
         $packetCollection->raw_website = $raw_website;
         $packetCollection->new_domain = $new_domain;
         //$packetCollection->clicky_id = $clicky_id;
@@ -68,7 +66,7 @@ class SigController extends BaseController
     //将机器人消息存进消息队列
     $connection = App::make('rabbitmq');
     $channel = $connection->channel();
-    $queue = 'default';
+    $queue = 'default'; 
     $channel->queue_declare($queue, false, true, false, false);
     $messageData = [
         'envData' => [
@@ -81,13 +79,11 @@ class SigController extends BaseController
           'bot_chatid' => $bot_chatid
         ]
     ];
-    $message = new AMQPMessage(json_encode($messageData));
+    $message = new AMQPMessage(json_encode($messageData));    
     try {
         $result = $channel->basic_publish($message, '', $queue);
     } catch (\Exception $e) {
         //Monolog::error('Failed to publish message: ' . $e->getMessage());
-        $channel->close();
-        $connection->close();
         return response()->json(['code'=>0,'message' => 'Failed to Publish Message','details'=>$e->getMessage()]);
     }
     $channel->close();
