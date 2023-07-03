@@ -27,7 +27,7 @@ Covalenthq.prototype = {
                 break;
         }
         const httpCovalenthq = axios.create({
-            baseURL: "https://",
+            //baseURL: "https://",
             timeout: 1000 * 180,
             withCredentials: false,
         });
@@ -35,7 +35,7 @@ Covalenthq.prototype = {
             method: "get",
             maxBodyLength: Infinity,
             url:
-                "api.covalenthq.com/v1/" +
+                "https://api.covalenthq.com/v1/" +
                 chainName +
                 "/address/" +
                 walletAddress +
