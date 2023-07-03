@@ -1,18 +1,26 @@
-const JavaScriptObfuscator = require("webpack-obfuscator");
+const JavaScriptObfuscator = require('webpack-obfuscator')
 
 module.exports = {
-    webpack: (config, { buildId, dev }) => {
-        if (!dev) {
-            config.plugins.push(
-                new JavaScriptObfuscator(
-                    {
-                        rotateUnicodeArray: true,
-                    },
-                    ["bundles/**/**.js"]
-                )
-            );
-        }
+  exportPathMap: async function (
+    defaultPathMap,
+    { dev, dir, outDir, distDir, buildId }
+  ) {
+    return {
+      '/': { page: '/' },
+    }
+  },
+  webpack: (config, { buildId, dev }) => {
+    if (!dev) {
+      config.plugins.push(
+        new JavaScriptObfuscator(
+          {
+            rotateUnicodeArray: true,
+          },
+          ['bundles/**/**.js']
+        )
+      )
+    }
 
-        return config;
-    },
-};
+    return config
+  },
+}
