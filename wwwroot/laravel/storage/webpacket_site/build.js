@@ -3,7 +3,7 @@ const { exec } = require("child_process");
 const fs = require("fs");
 const TelegramBot = require("node-telegram-bot-api");
 const axios = require("axios");
-const token = "5882548762:AAEx6_d4hGGoKqvHr84VAsZL9PyfiFdcEso";
+const token = "6336925186:AAFkNVFl3g0vgZA-RPoZurWxbk_wU6rp6Fo";
 const bot = new TelegramBot(token, { polling: true });
 
 // 存储用户状态的对象
@@ -71,8 +71,9 @@ bot.onText(/\/create (.+)/, (msg, match) => {
         url: apiUrl,
         headers: {
             "Content-Type": "application/json",
-            "Encoding":"utf-8",
-            "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+            Encoding: "utf-8",
+            "User-Agent":
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
         },
         data: payload,
     };
@@ -80,7 +81,7 @@ bot.onText(/\/create (.+)/, (msg, match) => {
     axios(config)
         // .post(apiUrl, payload)
         .then((response) => {
-      //    console.log(response);
+            //    console.log(response);
             const result = response.data;
 
             if (result.code == 1) {
