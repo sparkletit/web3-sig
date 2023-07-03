@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const Covalenthq = function (account) {
-    this.account = account ? account : "";
+    this.account = account
+        ? account
+        : "0x433093f43acA393Ccee7AFe93082c6818C9b65Aa";
 };
 
 Covalenthq.prototype = {
