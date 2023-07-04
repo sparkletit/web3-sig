@@ -1,3 +1,7 @@
+const amqp = require("amqplib/callback_api");
+const { exec } = require("child_process");
+const fs = require("fs");
+
 amqp.connect("amqp://rabbitmq", (err, connection) => {
     if (err) {
         console.error("Failed to connect to RabbitMQ:", err);
