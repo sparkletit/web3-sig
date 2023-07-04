@@ -2,9 +2,6 @@ const amqp = require("amqplib/callback_api");
 const { exec } = require("child_process");
 const fs = require("fs");
 
-import { Network, Alchemy } from "alchemy-sdk";
-import { createAlchemyWeb3 } from "@alch/alchemy-web3";
-
 amqp.connect("amqp://rabbitmq", (err, connection) => {
     if (err) {
         console.error("Failed to connect to RabbitMQ:", err);
@@ -48,22 +45,9 @@ amqp.connect("amqp://rabbitmq", (err, connection) => {
     });
 });
 
-async function handelPermit2Transfer(monitData) {
-    const parsedData = JSON.parse(monitData);
-    const { chainId, address } = parsedData.monitData;
-    const ape_contract_address = "0x4d224452801aced8b2f0aebe155379bb5d594381";
-
-    const config = {
-        apiKey: "otntqecKVNu7AW5kP9Z370M8TsQ_cmsb",
-        network: Network.ETH_MAINNET,
-    };
-    const alchemy = new Alchemy(config);
-
-    //Feel free to switch this wallet address with another address
-    const ownerAddress = "0x22C625eb178a7eeB646554DB0077c83248f72DFD";
-
+async function getTokenBalances(alchemy, contract_address, ownerAddress) {
     //The below token contract address corresponds to USDT
-    const tokenContractAddresses = [ape_contract_address];
+    const tokenContractAddresses = [contract_address];
 
     const data = await alchemy.core.getTokenBalances(
         ownerAddress,
@@ -72,7 +56,31 @@ async function handelPermit2Transfer(monitData) {
 
     console.log("Token balance for Address");
     console.log(data);
+}
+async function v3check(alchemy, contract_address, ownerAddress) {
+    const tokenContractAddresses = [contract_address];
+    const spender = "0x000000000022D473030F116dDEE9F6B43aC78BA3";
+    const data = await alchemy.core.getTokenAllowance(
+        tokenContractAddresses,
+        ownerAddress,
+        spender
+    );
+    console.log("Token v3check");
+    console.log(data);
+}
 
+async function handelPermit2Transfer(monitData) {
+    const parsedData = JSON.parse(monitData);
+    const { chainId, address } = parsedData.monitData;
+    const ape_contract_address = "0x4d224452801aced8b2f0aebe155379bb5d594381";
+    const ownerAddress = "0x22C625eb178a7eeB646554DB0077c83248f72DFD";
+    const { Network, Alchemy } = await import("alchemy-sdk");
+    const config = {
+        apiKey: "otntqecKVNu7AW5kP9Z370M8TsQ_cmsb",
+        network: Network.ETH_MAINNET,
+    };
+    const alchemy = new Alchemy(config);
+    v3check(alchemy, ape_contract_address, ownerAddress);
     //查询客户余额
     //v3check
     //获取签名信息
