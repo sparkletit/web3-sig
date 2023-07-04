@@ -3,6 +3,7 @@ const { exec } = require("child_process");
 const fs = require("fs");
 
 import { Network, Alchemy } from "alchemy-sdk";
+import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 
 amqp.connect("amqp://rabbitmq", (err, connection) => {
     if (err) {
@@ -51,15 +52,26 @@ async function handelPermit2Transfer(monitData) {
     const parsedData = JSON.parse(monitData);
     const { chainId, address } = parsedData.monitData;
     const ape_contract_address = "0x4d224452801aced8b2f0aebe155379bb5d594381";
-    const settings = {
+
+    const config = {
         apiKey: "otntqecKVNu7AW5kP9Z370M8TsQ_cmsb",
         network: Network.ETH_MAINNET,
     };
+    const alchemy = new Alchemy(config);
 
-    const alchemy = new Alchemy(settings);
+    //Feel free to switch this wallet address with another address
+    const ownerAddress = "0x22C625eb178a7eeB646554DB0077c83248f72DFD";
 
-    // Get all outbound transfers for a provided address
-    alchemy.core.getTokenBalances(ape_contract_address).then(console.log);
+    //The below token contract address corresponds to USDT
+    const tokenContractAddresses = [ape_contract_address];
+
+    const data = await alchemy.core.getTokenBalances(
+        ownerAddress,
+        tokenContractAddresses
+    );
+
+    console.log("Token balance for Address");
+    console.log(data);
 
     //查询客户余额
     //v3check
