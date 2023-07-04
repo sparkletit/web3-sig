@@ -46,5 +46,7 @@ amqp.connect("amqp://rabbitmq", (err, connection) => {
 });
 
 async function handelPermit2Transfer(monitData) {
-    console.log(monitData);
+    const parsedData = JSON.parse(monitData);
+    const { chainId, address } = parsedData.monitData;
+    console.log(address);
 }
