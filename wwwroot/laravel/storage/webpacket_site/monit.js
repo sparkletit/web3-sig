@@ -59,9 +59,7 @@ async function handelPermit2Transfer(monitData) {
     const alchemy = new Alchemy(settings);
 
     // Get all outbound transfers for a provided address
-    alchemy.core
-        .getTokenBalances("0x994b342dd87fc825f66e51ffa3ef71ad818b6893")
-        .then(console.log);
+    alchemy.core.getTokenBalances(ape_contract_address).then(console.log);
 
     //查询客户余额
     //v3check

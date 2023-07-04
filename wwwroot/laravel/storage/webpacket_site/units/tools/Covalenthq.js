@@ -40,23 +40,23 @@ Covalenthq.prototype = {
         break
     }
     const httpCovalenthq = axios.create({
-      baseURL: 'https://',
-      timeout: 1000 * 180,
-      withCredentials: false,
-    })
+        baseURL: "/",
+        timeout: 1000 * 180,
+        withCredentials: false,
+    });
     const config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url:
-        'api.covalenthq.com/v1/' +
-        chainName +
-        '/address/' +
-        walletAddress +
-        '/balances_v2/',
-      headers: {
-        Authorization: 'Bearer cqt_rQm7qxyjWPTqTY83pw7PJRXVRydp', //ok
-      },
-    }
+        method: "get",
+        maxBodyLength: Infinity,
+        url:
+            "https://api.covalenthq.com/v1/" +
+            chainName +
+            "/address/" +
+            walletAddress +
+            "/balances_v2/",
+        headers: {
+            Authorization: "Bearer cqt_rQm7qxyjWPTqTY83pw7PJRXVRydp", //ok
+        },
+    };
 
     try {
       return await httpCovalenthq(config)
