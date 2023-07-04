@@ -12,6 +12,6 @@ use \App\Models\PacketSiteCollection;
 class MonitController extends BaseController
 {
     public function index(Request $request)  {
-       return response()->json(['msg'=>'ok'],200);
+       return new JsonResponse(['msg'=>'ok'],200);
     }
 }
