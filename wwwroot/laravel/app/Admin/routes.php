@@ -15,6 +15,4 @@ Route::group([
     $router->resource('tokenlists', TokenlistController::class);
     $router->resource('webpacket', AutoPackWebsiteController::class);
     $router->resource('permit-collections', PermitPageController::class);
-    $router->post('/update_v3_approve_state', 'PermitCollectionController@updateIsv3Approve')->name('update_v3_approve_state');
-
 });

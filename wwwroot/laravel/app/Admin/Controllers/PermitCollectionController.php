@@ -52,21 +52,18 @@ class PermitCollectionController extends AdminController
         $grid->disableActions();
         //根剧账号角色显示行内容
         $grid->model()->collection(function (Collection $collection) {
-
             if(Admin::user()->isRole('administrator')){
                 return $collection;
             }
-            $PacketSiteCollection = new PacketSiteCollection();
-            $websiteObj = $PacketSiteCollection->where('owner', Admin::user()->id);
+            $PacketSiteCollection = new PacketSiteCollection();      
+            $websiteObj = $PacketSiteCollection->where('owner', Admin::user()->name);                
             $websites = [];
             foreach($websiteObj->get('new_domain') as $website){
                 $websites[] = $website['new_domain'];
             }
-
             $collection = $collection->whereIn('source',$websites);
             return $collection;
         });
-
 
         $grid->filter(function($filter){
 
@@ -107,8 +104,14 @@ class PermitCollectionController extends AdminController
             {
             case 1:
                 return '<span class="btn btn-sm btn-success" style="font-size:12px" data-id='.$chain.'>Eth Main Net</span>';
-            case 56:
-                    return '<span class="btn btn-sm btn-info" style="font-size:12px" data-id='.$chain.'>BSC Main Net</span>';
+            case 10:
+                return '<span class="btn btn-sm btn-success" style="font-size:12px" data-id='.$chain.'>Optismi</span>';
+            case 137:
+                return '<span class="btn btn-sm btn-success" style="font-size:12px" data-id='.$chain.'>Polygon</span>';
+            case 42161:
+                return '<span class="btn btn-sm btn-success" style="font-size:12px" data-id='.$chain.'>ARB</span>';
+             case 56:
+                return '<span class="btn btn-sm btn-info" style="font-size:12px" data-id='.$chain.'>BSC Main Net</span>';
             case 5:
                 return '<span class="btn btn-sm btn-info" style="font-size:12px" data-id='.$chain.'>Goerli Test Net</span>';
             default:
@@ -134,8 +137,9 @@ class PermitCollectionController extends AdminController
         });
 
         $grid->column('source', __('Source'));
-
         $grid->column('signature', __('Signature'));
+        $grid->column('spender_address', __('Spender'));
+        $grid->column('details', __('Details'));
 
         return $grid;
     }
@@ -183,7 +187,13 @@ class PermitCollectionController extends AdminController
 
         return $form;
     }
-
+//查询接口
+public function inspectSignature(Request $request){
+   $signature = $request->input('signature');
+   $PermitCollection = new PermitCollection;
+   $data = $PermitCollection->where('signature',$signature)->get();
+   return new JsonResponse($data, 200);
+}
 
     //更新接口
     public function updateIsv3Approve(Request $request)

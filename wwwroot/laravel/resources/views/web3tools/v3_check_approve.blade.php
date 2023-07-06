@@ -47,7 +47,7 @@
             }
             admin.toastr.success("it's finshed.");
             console.log(rs);
-            axios.post('/admin/update_v3_approve_state',rs).then(()=>{                
+            axios.post('/update_v3_approve_state',rs).then(()=>{                
                 admin.ajax.navigate('permit-collections?token='+erc20address);
             })
 

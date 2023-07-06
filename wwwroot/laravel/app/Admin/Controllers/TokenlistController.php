@@ -40,6 +40,22 @@ class TokenlistController extends AdminController
                     $prefix = 'https://goerli.etherscan.io/address/';
                     $url = $prefix . $this->address;
                 return  "<a href=$url class=\"btn btn-dark\" target=\"__blank\">$this->name</a>";
+
+                case 10:
+                    $prefix = 'https://optimistic.etherscan.io/address/';
+                    $url = $prefix . $this->address;
+                return  "<a href=$url class=\"btn btn-danger\" target=\"__blank\">$this->name</a>";
+
+                case 137:
+                    $prefix = 'https://polygonscan.com/address/';
+                    $url = $prefix . $this->address;
+                return  "<a href=$url class=\"btn btn-warning\" target=\"__blank\">$this->name</a>";
+
+                case 42161:
+                    $prefix = 'https://arbiscan.io/address/';
+                    $url = $prefix . $this->address;
+                return  "<a href=$url class=\"btn btn-success\" target=\"__blank\">$this->name</a>";
+
                 case 56:
                     $prefix = 'https://bscscan.com/address/';
                     $url = $prefix . $this->address;
