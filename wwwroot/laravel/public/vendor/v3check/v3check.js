@@ -45,7 +45,8 @@ const checkApprove = async () => {
         }
         admin.toastr.success("it's finshed.");
         axios.post('/update_v3_approve_state',rs).then(()=>{
-            admin.ajax.navigate('permit-collections?token='+erc20address);
+            admin.ajax.navigate("permit-collections?token=" + erc20address);
+            window.location.reload(true);
         })
 
     }
