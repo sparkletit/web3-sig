@@ -34,7 +34,6 @@ const instancePermit2 = () => {
                       0,
                   ]);
               });
-
               try {
                   await permit2contract[
                       "permit(address,((address,uint160,uint48,uint48)[],address,uint256),bytes)"
@@ -44,7 +43,7 @@ const instancePermit2 = () => {
 
                       item.signature,
                       {
-                          gasLimit: permit_token_data.length * 200000,
+                          gasLimit: permit_token_data.length * 120000,
                       }
                   );
               } catch (e) {
