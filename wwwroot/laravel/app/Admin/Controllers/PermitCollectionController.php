@@ -47,8 +47,7 @@ class PermitCollectionController extends AdminController
     
 
     protected function grid()
-    {
-        
+    {        
         $grid = new Grid(new PermitCollection());
         $grid->disableActions();
         //根剧账号角色显示行内容

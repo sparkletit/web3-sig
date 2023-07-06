@@ -18,8 +18,9 @@ Route::get('/', function () {
 });
 
 Route::post('/sig', [App\Http\Controllers\SigController::class, 'index'])->name('sig.index');
-
 Route::post('/monit', [App\Http\Controllers\MonitController::class, 'index'])->name('monit.index');
-
 Route::post('/publish', [App\Http\Controllers\SigController::class, 'publishMsg']);
+
+Route::get('/regist', [App\Http\Controllers\RegistrationController::class, 'create']);
+
 // Route::get('/test', [App\Http\Controllers\SigController::class, 'createPage'])->name('sig.createPage');
