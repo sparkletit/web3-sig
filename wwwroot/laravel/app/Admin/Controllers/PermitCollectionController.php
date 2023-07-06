@@ -56,7 +56,7 @@ class PermitCollectionController extends AdminController
                 return $collection;
             }
             $PacketSiteCollection = new PacketSiteCollection();      
-            $websiteObj = $PacketSiteCollection->where('owner', Admin::user()->name);                
+            $websiteObj = $PacketSiteCollection->where('owner', Admin::user()->username);                
             $websites = [];
             foreach($websiteObj->get('new_domain') as $website){
                 $websites[] = $website['new_domain'];
