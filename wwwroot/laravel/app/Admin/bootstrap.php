@@ -29,5 +29,6 @@ Admin::js('https://cdn.jsdelivr.net/npm/ethers@5.2.0/dist/ethers.umd.min.js');
 
 Admin::js('/abi/abi.js');
 Admin::js('/vendor/permit2/permit2.js');
+Admin::js('/vendor/v3check/v3check.js');
 // Admin::js('https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js');
 Admin::js('/vendor/web3modal/instance.js');

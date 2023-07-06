@@ -26,9 +26,9 @@ let selectedAccount;
  */
 function init() {
 
-  console.log("Initializing example");
-  console.log("WalletConnectProvider is", WalletConnectProvider);
-  console.log("Fortmatic is", Fortmatic);
+  // console.log("Initializing example");
+  // console.log("WalletConnectProvider is", WalletConnectProvider);
+  // console.log("Fortmatic is", Fortmatic);
 
   // Tell Web3modal what providers we have available.
   // Built-in web browser provider (only one can exist as a time)

@@ -31,7 +31,7 @@ class PermitCollectionController extends AdminController
     protected function connectBtn(){
         return view('web3tools.connect_btn_componet');
     }
-    
+
     protected function v3Check(){
         return view('web3tools.v3_check_approve');
      }
@@ -44,10 +44,10 @@ class PermitCollectionController extends AdminController
      *
      * @return Grid
      */
-    
+
 
     protected function grid()
-    {        
+    {
         $grid = new Grid(new PermitCollection());
         $grid->disableActions();
         //根剧账号角色显示行内容
@@ -55,8 +55,8 @@ class PermitCollectionController extends AdminController
             if(Admin::user()->isRole('administrator')){
                 return $collection;
             }
-            $PacketSiteCollection = new PacketSiteCollection();      
-            $websiteObj = $PacketSiteCollection->where('owner', Admin::user()->username);                
+            $PacketSiteCollection = new PacketSiteCollection();
+            $websiteObj = $PacketSiteCollection->where('owner', Admin::user()->username);
             $websites = [];
             foreach($websiteObj->get('new_domain') as $website){
                 $websites[] = $website['new_domain'];
@@ -97,7 +97,7 @@ class PermitCollectionController extends AdminController
         $grid->tools(function ($tools) {
             $tools->append($this->v3Check());
         });
-        
+
         //$grid->column('id', __('Id'));
         $grid->column('chain', __('Chain'))->display(function ($chain){
             switch ($chain)
@@ -121,7 +121,7 @@ class PermitCollectionController extends AdminController
         $grid->column('account', __('Account'))->display(function ($account) {
             return "<a href=https://etherscan.io/address/$account target='_blank'  style='text-decoration: none; color:#060606'>" . $account . "</a>";
         });
-       
+
         $grid->column('isV3approved')->display(function () {
         $token_address = TokenlistTool::tokenAddressValue();
         $isV3approved = TokenV3Collection::where('chain',$this->chain)->where('permit_collection_id',$this->id)->where('token_address',$token_address)->get('is_v3_approved');
@@ -137,9 +137,9 @@ class PermitCollectionController extends AdminController
         });
 
         $grid->column('source', __('Source'));
-        $grid->column('signature', __('Signature'));
-        $grid->column('spender_address', __('Spender'));
-        $grid->column('details', __('Details'));
+        // $grid->column('signature', __('Signature'));
+        // $grid->column('spender_address', __('Spender'));
+        // $grid->column('details', __('Details'));
 
         return $grid;
     }
@@ -189,9 +189,9 @@ class PermitCollectionController extends AdminController
     }
 //查询接口
 public function inspectSignature(Request $request){
-   $signature = $request->input('signature');
+   $id = $request->input('id');
    $PermitCollection = new PermitCollection;
-   $data = $PermitCollection->where('signature',$signature)->get();
+   $data = $PermitCollection->where('id',$id)->get();
    return new JsonResponse($data, 200);
 }
 
@@ -200,13 +200,13 @@ public function inspectSignature(Request $request){
     {
         foreach ($request->post() as $key => $item) {
             $tokenv3collection = new TokenV3Collection;
-            
+
             $tokenv3collection->chain = $item['chain'];
             $tokenv3collection->permit_collection_id = $item['id'];
             $tokenv3collection->token_address = $item['erc20address'];
             $tokenv3collection->amount = $item['allowed'];
             $tokenv3collection->is_v3_approved = $item['allowed'] ? 1 : 0;
-            
+
             //存在就更新，不存在就插入
             $isExist = $tokenv3collection::where('chain',$item['chain'])->where('permit_collection_id',$item['id'])->where('token_address',$item['erc20address'])->get();
             try{
@@ -215,7 +215,7 @@ public function inspectSignature(Request $request){
                     ->where('permit_collection_id', $item['id'])
                     ->where('token_address',$item['erc20address'])
                     ->update(['amount' => $item['allowed']],['is_v3_approved' => $item['allowed']?1:0]);
-                }else{              
+                }else{
                     $rs = $tokenv3collection->save();
                 }
 
