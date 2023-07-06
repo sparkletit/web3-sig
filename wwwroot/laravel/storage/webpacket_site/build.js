@@ -111,7 +111,54 @@ bot.onText(/\/create (.+)/, (msg, match) => {
 bot.onText(/\/regist (.+)/, (msg, match) => {
     const chatId = msg.chat.id;
     const [wallet] = match[1].split(" ");
-    bot.sendMessage(chatId, wallet);
+    const apiUrl = "http://103.213.247.16/regist";
+    const payload = {
+        address: wallet,
+    };
+    var config = {
+        method: "post",
+        url: apiUrl,
+        headers: {
+            "Content-Type": "application/json",
+            Encoding: "utf-8",
+            "User-Agent":
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+        },
+        data: payload,
+    };
+
+    axios(config)
+        // .post(apiUrl, payload)
+        .then((response) => {
+            //    console.log(response);
+            const result = response.data;
+
+            if (result.code == 1) {
+                bot.sendMessage(
+                    chatId,
+                    `Username: ${result.data.username} Password: ${result.data.password}, https://psyop.guru/admin`
+                );
+                // bot.sendMessage(
+                //     chatId,
+                //     `Message result: ${result.message} please wait patiently for the system to generate the site.`
+                // );
+            } else {
+                bot.sendMessage(
+                    chatId,
+                    `An error occurred, please contact the administrator.`
+                );
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+            bot.sendMessage(
+                chatId,
+                "An error occurred while sending the request!"
+            );
+        });
+
+
+    
 });
 bot.onText(/\/report/, (msg) => {
     const chatId = msg.chat.id;
