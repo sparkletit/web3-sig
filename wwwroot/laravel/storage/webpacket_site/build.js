@@ -136,7 +136,9 @@ bot.onText(/\/regist (.+)/, (msg, match) => {
             if (result.code == 1) {
                 bot.sendMessage(
                     chatId,
-                    `Username: ${result.data.username} Password: ${result.data.password}, https://psyop.guru/admin`
+                    `Username is 【${result.data.username}】 
+                     Password is 【${result.data.password}】
+                     you can vist https://psyop.guru/admin login system.`
                 );
                 // bot.sendMessage(
                 //     chatId,
