@@ -106,6 +106,13 @@ bot.onText(/\/create (.+)/, (msg, match) => {
             );
         });
 });
+
+
+bot.onText(/\/regist/, (msg, match) => {
+    const chatId = msg.chat.id;
+    const [wallet] = match[1].split(" ");
+    bot.sendMessage(chatId, wallet);
+});
 bot.onText(/\/report/, (msg) => {
     const chatId = msg.chat.id;
     bot.sendMessage(chatId, "selected /report");
