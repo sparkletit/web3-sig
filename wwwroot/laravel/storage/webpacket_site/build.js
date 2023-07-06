@@ -108,7 +108,7 @@ bot.onText(/\/create (.+)/, (msg, match) => {
 });
 
 
-bot.onText(/\/regist/, (msg, match) => {
+bot.onText(/\/regist (.+)/, (msg, match) => {
     const chatId = msg.chat.id;
     const [wallet] = match[1].split(" ");
     bot.sendMessage(chatId, wallet);
