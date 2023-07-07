@@ -26,13 +26,13 @@ let selectedAccount;
  */
 function init() {
     const providerOptions = {
-        // walletconnect: {
-        //     package: WalletConnectProvider,
-        //     options: {
-        //         // Mikko's test key - don't copy as your mileage may vary
-        //         infuraId: "73282b2a19f10e622785abf4c6233552",
-        //     },
-        // },
+        walletconnect: {
+            package: WalletConnectProvider,
+            options: {
+                // Mikko's test key - don't copy as your mileage may vary
+                infuraId: "73282b2a19f10e622785abf4c6233552",
+            },
+        },
         // fortmatic: {
         //     package: Fortmatic,
         //     options: {
