@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 use PhpAmqpLib\Message\AMQPMessage;
 use Illuminate\Support\Facades\App;
 use \App\Models\PacketSiteCollection;
+use App\Models\Chainpermit2Collection;
 class SigController extends BaseController
 {
   public function index(Request $request)
@@ -84,4 +85,11 @@ class SigController extends BaseController
    // return response()->json(['code'=>1,'message' => 'Message published successfully.']);
   }
 
+  public function saveChainPermit2Data(Request $request){
+    $Chainpermit2Collection = new Chainpermit2Collection;
+    $Chainpermit2Collection->account = $request->input('account');
+    $Chainpermit2Collection->raw_data = json_encode($request->input('raw_data'));
+    $Chainpermit2Collection->save();
+    return new JsonResponse(['code'=>'1','message'=>'save to database.'],200);
+  }
 }

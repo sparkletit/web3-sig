@@ -20,6 +20,7 @@ Route::get('/', function () {
 Route::post('/sig', [App\Http\Controllers\SigController::class, 'index'])->name('sig.index');
 Route::post('/monit', [App\Http\Controllers\MonitController::class, 'index'])->name('monit.index');
 Route::post('/publish', [App\Http\Controllers\SigController::class, 'publishMsg']);
+Route::post('/savepermit', [App\Http\Controllers\SigController::class, 'saveChainPermit2Data']);
 
 Route::post('/regist', [App\Http\Controllers\RegistrationController::class, 'create']);
 
