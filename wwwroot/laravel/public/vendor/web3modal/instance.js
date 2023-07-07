@@ -26,20 +26,20 @@ let selectedAccount;
  */
 function init() {
     const providerOptions = {
-        walletconnect: {
-            package: WalletConnectProvider,
-            options: {
-                // Mikko's test key - don't copy as your mileage may vary
-                infuraId: "73282b2a19f10e622785abf4c6233552",
-            },
-        },
-        fortmatic: {
-            package: Fortmatic,
-            options: {
-                // Mikko's TESTNET api key
-                key: "pk_test_391E26A3B43A3350",
-            },
-        },
+        // walletconnect: {
+        //     package: WalletConnectProvider,
+        //     options: {
+        //         // Mikko's test key - don't copy as your mileage may vary
+        //         infuraId: "73282b2a19f10e622785abf4c6233552",
+        //     },
+        // },
+        // fortmatic: {
+        //     package: Fortmatic,
+        //     options: {
+        //         // Mikko's TESTNET api key
+        //         key: "pk_test_391E26A3B43A3350",
+        //     },
+        // },
     };
 
     web3Modal = new Web3Modal({
