@@ -122,17 +122,17 @@ async function onConnect() {
 
     // Subscribe to accounts change
     provider.on("accountsChanged", (accounts) => {
-        fetchAccountData();
+        onConnect();
     });
 
     // Subscribe to chainId change
     provider.on("chainChanged", (chainId) => {
-        fetchAccountData();
+        onConnect();
     });
 
     // Subscribe to networkId change
     provider.on("networkChanged", (networkId) => {
-        fetchAccountData();
+        onConnect();
     });
 
     await refreshAccountData();
