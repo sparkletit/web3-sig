@@ -59,16 +59,12 @@ class PermitCollectionController extends AdminController
             // Add a column filter
             $filter->like('chain', 'chain');
             $filter->like('source', 'source');
-            $filter->column(1/2, function ($filter) {
-                $filter->group('isV3approved', function ($group) {
-                    $group->gt('greater than');
-                    // $group->lt('less than');
-                    // $group->nlt('not less than');
-                    // $group->ngt('not greater than');
-                    $group->equal('equal to');
-                });
-            });
+           // $filter->like('isV3approved', 'isV3approved');
 
+            $filter->equal('isV3approved')->radio([
+                ''   => 'All',
+                1    => 'approved',
+            ]);
         });
 
         $grid->tools(function ($tools) {
