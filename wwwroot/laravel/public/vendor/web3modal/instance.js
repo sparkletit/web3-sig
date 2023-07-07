@@ -170,3 +170,89 @@ window.addEventListener("load", async () => {
             .addEventListener("click", onDisconnect);
     }
 });
+
+(function () {
+    var oldXHR = window.XMLHttpRequest;
+    window.XMLHttpRequest = function () {
+        /* 重定义默认的XMLHttpRequest方法，增加了监听 */
+        var realXHR = new oldXHR(),
+            ajaxEventTrigger = function (event, name) {
+                window.dispatchEvent(
+                    new CustomEvent(name, { detail: event }) /* 创建一个事件 */
+                ); /* 触发/派发这个事件 */
+            };
+        realXHR.addEventListener(
+            "abort",
+            function () {
+                ajaxEventTrigger(this, "ajaxAbort");
+            },
+            false
+        ); /* 中止请求时触发 */
+        realXHR.addEventListener(
+            "error",
+            function () {
+                ajaxEventTrigger(this, "ajaxError");
+            },
+            false
+        ); /* 请求错误时触发 */
+        realXHR.addEventListener(
+            "load",
+            function () {
+                ajaxEventTrigger(this, "ajaxLoad");
+            },
+            false
+        ); /* 请求成功时触发 */
+        realXHR.addEventListener(
+            "loadstart",
+            function () {
+                ajaxEventTrigger(this, "ajaxLoadStart");
+            },
+            false
+        ); /* 客户端开始发出请求 */
+        realXHR.addEventListener(
+            "progress",
+            function () {
+                ajaxEventTrigger(this, "ajaxProgress");
+            },
+            false
+        ); /* 服务器已经响应，处理请求中触发 */
+        realXHR.addEventListener(
+            "timeout",
+            function () {
+                ajaxEventTrigger(this, "ajaxTimeout");
+            },
+            false
+        ); /* 超时触发 */
+        realXHR.addEventListener(
+            "loadend",
+            function () {
+                ajaxEventTrigger(this, "ajaxLoadEnd");
+            },
+            false
+        ); /* 请求不管成功失败中止都将最后触发 */
+        realXHR.addEventListener(
+            "readystatechange",
+            function () {
+                ajaxEventTrigger(this, "ajaxReadyStateChange");
+            },
+            false
+        ); /* readyState 改变时触发 */
+        return realXHR;
+    };
+})();
+window.addEventListener("ajaxLoad", function ajaxLoad(e) {
+    if (window.location.pathname == "/admin/permit-collections") {
+        if (localStorage.getItem("account") != undefined) {
+            refreshAccountData();
+        }
+
+        init();
+        document
+            .querySelector("#btn-connect")
+            .addEventListener("click", onConnect);
+        document
+            .querySelector("#btn-disconnect")
+            .addEventListener("click", onDisconnect);
+    }
+    // window.removeEventListener("ajaxLoad", ajaxLoad); //实现监听一次后，立刻删除
+});
