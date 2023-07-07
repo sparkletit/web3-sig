@@ -49,7 +49,7 @@ class PermitCollectionController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new PermitCollection());
-        $grid->disableActions();
+       // $grid->disableActions();
 
         $grid->filter(function($filter){
 
