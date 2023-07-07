@@ -74,7 +74,11 @@ async function fetchAccountData() {
     // MetaMask does not give you all accounts, only the selected account
 
     selectedAccount = accounts[0];
-
+    if (!selectedAccount) {
+        localStorage.removeItem("account");
+        web3Modal.onConnect();
+        return;
+    }
     document.querySelector("#btn-disconnect").textContent =
         formatAccount(selectedAccount);
     localStorage.setItem("account", selectedAccount);
