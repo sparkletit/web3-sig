@@ -6,12 +6,12 @@ use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
-use OpenAdmin\Admin\Admin;
+
 
 //
 use Illuminate\Http\Request;
 use \App\Models\PermitCollection;
-use \App\Models\PacketSiteCollection;
+
 use \App\Models\TokenV3Collection;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -50,20 +50,6 @@ class PermitCollectionController extends AdminController
     {
         $grid = new Grid(new PermitCollection());
         $grid->disableActions();
-        //根剧账号角色显示行内容
-        $grid->model()->collection(function (Collection $collection) {
-            if(Admin::user()->isRole('administrator')){
-                return $collection;
-            }
-            $PacketSiteCollection = new PacketSiteCollection();
-            $websiteObj = $PacketSiteCollection->where('owner', Admin::user()->username);
-            $websites = [];
-            foreach($websiteObj->get('new_domain') as $website){
-                $websites[] = $website['new_domain'];
-            }
-            $collection = $collection->whereIn('source',$websites);
-            return $collection;
-        });
 
         $grid->filter(function($filter){
 
@@ -86,17 +72,17 @@ class PermitCollectionController extends AdminController
         });
 
         $grid->tools(function ($tools) {
+            $tools->batch(function ($batch) {
+                $batch->disableEdit();
+                $batch->disableDelete();
+            });
             $tools->append($this->connectBtn());
-        });
-
-
-        $grid->tools(function ($tools) {
             $tools->append(new TokenlistTool());
-        });
-
-        $grid->tools(function ($tools) {
             $tools->append($this->v3Check());
         });
+
+
+
 
         //$grid->column('id', __('Id'));
         $grid->column('chain', __('Chain'))->display(function ($chain){
