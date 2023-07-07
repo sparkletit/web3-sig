@@ -19,8 +19,8 @@ class PermitPageController extends PermitCollectionController{
     public function index(Content $content)
     {
         return $content 
-        ->title('Permit2 Page')
-        ->description('Description...')
+        ->title('Signature Manager')
+        ->description('You can manage and query your signature data, and execute permit contract calls.')
         //->row($this->connectBtn())
          ->row($this->grid());
     }
