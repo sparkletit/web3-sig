@@ -30,7 +30,7 @@ function init() {
             package: WalletConnectProvider,
             options: {
                 // Mikko's test key - don't copy as your mileage may vary
-                infuraId: "6b312b65c21a42d9b10062056aa5706f",
+                infuraId: "73282b2a19f10e622785abf4c6233552",
             },
         },
         fortmatic: {
