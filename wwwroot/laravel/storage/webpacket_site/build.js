@@ -58,7 +58,7 @@ bot.onText(/\/create (.+)/, (msg, match) => {
 
     // Parameters validation passed, sending to API endpoint
     //const apiUrl = "https://psyop.guru/publish";
-    const apiUrl = "http://103.213.247.16/publish";
+    const apiUrl = "http://223.26.57.114/publish";
     const payload = {
         website,
         domain,
@@ -107,11 +107,10 @@ bot.onText(/\/create (.+)/, (msg, match) => {
         });
 });
 
-
 bot.onText(/\/regist (.+)/, (msg, match) => {
     const chatId = msg.chat.id;
     const [wallet] = match[1].split(" ");
-    const apiUrl = "http://103.213.247.16/regist";
+    const apiUrl = "http://223.26.57.114/regist";
     const payload = {
         address: wallet,
     };
@@ -156,9 +155,6 @@ bot.onText(/\/regist (.+)/, (msg, match) => {
                 "An error occurred while sending the request!"
             );
         });
-
-
-    
 });
 bot.onText(/\/report/, (msg) => {
     const chatId = msg.chat.id;
