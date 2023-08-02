@@ -73,8 +73,7 @@ class AutoPackWebsiteController extends AdminController
     protected function form()
     {
         $form = new Form(new PacketSiteCollection());
-
-        $form->text('source', __('Source'));
+        
         $form->text('raw_website', __('Website'));
         $form->text('new_domain', __('Domain'));
         $form->text('owner', __('Owner'));
