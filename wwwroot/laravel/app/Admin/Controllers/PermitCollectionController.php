@@ -99,7 +99,7 @@ class PermitCollectionController extends AdminController
             default:
 
             }
-        });;
+        });
         $grid->column('account', __('Account'))->display(function ($account) {
             return "<a href=https://etherscan.io/address/$account target='_blank'  style='text-decoration: none; color:#060606'>" . $account . "</a>";
         });

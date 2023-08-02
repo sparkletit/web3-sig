@@ -13,6 +13,8 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
     $router->resource('tokenlists', TokenlistController::class);
-    $router->resource('webpacket', AutoPackWebsiteController::class);
+   // $router->resource('webpacket', AutoPackWebsiteController::class);
     $router->resource('permit-collections', PermitPageController::class);
+    $router->resource('websites', AutoPackWebsiteController::class);
+    
 });
