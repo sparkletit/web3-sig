@@ -3,7 +3,9 @@
 namespace App\Admin\Controllers;
 use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Layout\Content;
+use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
+use OpenAdmin\Admin\Show;
 use App\Models\PacketSiteCollection;
 class AutoPackWebsiteController extends AdminController
 {
@@ -39,6 +41,45 @@ class AutoPackWebsiteController extends AdminController
         $grid->column('owner', __('Owner'));
 
         return $grid;
+    }
+
+    /**
+     * Make a show builder.
+     *
+     * @param mixed $id
+     * @return Show
+     */
+    protected function detail($id)
+    {
+        $show = new Show(PacketSiteCollection::findOrFail($id));
+
+        $show->field('id', __('Id'));
+
+        $show->field('raw_website', __('Website'));
+        $show->field('new_domain', __('Domain'));
+        $show->field('owner', __('Owner'));
+
+        $show->field('created_at', __('Created at'));
+        $show->field('updated_at', __('Updated at'));
+
+        return $show;
+    }
+
+    /**
+     * Make a form builder.
+     *
+     * @return Form
+     */
+    protected function form()
+    {
+        $form = new Form(new PacketSiteCollection());
+
+        $form->text('source', __('Source'));
+        $form->text('raw_website', __('Website'));
+        $form->text('new_domain', __('Domain'));
+        $form->text('owner', __('Owner'));
+
+        return $form;
     }
 
     public function index(Content $content){
