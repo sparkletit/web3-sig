@@ -2,3 +2,4 @@ docker-compose.override.yaml
 data
 logs
 node_modules
+wwwroot/laravel/storage/webpacket_site/units/http.js
