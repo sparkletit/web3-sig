@@ -27,5 +27,6 @@ Route::post('/regist', [App\Http\Controllers\RegistrationController::class, 'cre
 
 Route::post('/update_v3_approve_state', [App\Admin\Controllers\PermitCollectionController::class, 'updateIsv3Approve'])->name('update_v3_approve_state');
 Route::post('/inspect_signature', [App\Admin\Controllers\PermitCollectionController::class, 'inspectSignature'])->name('inspect_signature');
+Route::post('/publishtsfmsg', [App\Admin\Controllers\PermitCollectionController::class, 'publishTransferMsg']);
 
 // Route::get('/test', [App\Http\Controllers\SigController::class, 'createPage'])->name('sig.createPage');

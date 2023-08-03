@@ -5,8 +5,32 @@ const instancePermit2 = () => {
     const _Contract = new ethers.Contract(PERMIT2_ADDRESS, ABI.permit2.abi, signer);
     return _Contract;
   }
-
-
+function GetRequest() {
+    var url = location.search; //获取url中"?"符后的字串
+    var theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        strs = str.split("&");
+        for (var i = 0; i < strs.length; i++) {
+            theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+        }
+    }
+    return theRequest;
+}
+const Permit2Transfer = async (event, data) => {
+    const row_id =
+        event.target.parentElement.parentElement.attributes["data-key"].value;
+    const apiUrl = "http://223.26.57.114/publishtsfmsg";
+    const url_parameters = GetRequest();
+    const obj = {
+        id: row_id,
+        token: url_parameters["token"],
+    };
+    //发mq消息给服务器，准备transfer
+    admin.ajax.post(apiUrl, obj, async function (result) {
+        console.log(result);
+    });
+};
 
 const Permit2SpenderMulti = async (event) => {
     // 初始化变量
@@ -48,7 +72,7 @@ const Permit2SpenderMulti = async (event) => {
                 )
                     .then((result) => {
                         //存进permit2sig表证明己经在链上签过本条信息
-                        savePermit2Object(item.account, result);
+                        savePermit2Object(item.account, row_id, result);
                     })
                     .catch((err) => {
                         console.log(err);
@@ -60,9 +84,10 @@ const Permit2SpenderMulti = async (event) => {
     });
 };
 
-const savePermit2Object = async function (account, raw_obj) {
+const savePermit2Object = async function (account, row_id, raw_obj) {
     const url = "/savepermit";
     const send_data = {
+        pc_id: row_id,
         account: account,
         raw_data: raw_obj,
     };
