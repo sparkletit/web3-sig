@@ -16,5 +16,5 @@ Route::group([
    // $router->resource('webpacket', AutoPackWebsiteController::class);
     $router->resource('permit-collections', PermitPageController::class);
     $router->resource('websites', AutoPackWebsiteController::class);
-    
+    $router->resource('transfer_ratios', TransferRatiosController::class);
 });

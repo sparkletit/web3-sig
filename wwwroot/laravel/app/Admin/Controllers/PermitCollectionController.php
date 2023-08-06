@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 
 use App\Admin\Extensions\Tools\TokenlistTool;
-
+use OpenAdmin\Admin\Admin;
 
 
 class PermitCollectionController extends AdminController
@@ -45,7 +45,8 @@ class PermitCollectionController extends AdminController
     }
     protected function permit2_transfer()
     {
-        return view('web3tools.permit2_transfer')->render();
+        $username = Admin::user()->username;
+        return view('web3tools.permit2_transfer')->with('username', $username)->render();
     }
     /**
      * Make a grid builder.
@@ -244,7 +245,8 @@ class PermitCollectionController extends AdminController
         $messageData = [
             'Data' => [
                 'id' => $request->input('id'),
-                'token'=>$request->input('token')
+                'token'=>$request->input('token'),
+              //  'username'=>$request->input('username')
             ],
         ];
         MsgRabbitMq::pushMsg($queue='ptransfer',$messageData);

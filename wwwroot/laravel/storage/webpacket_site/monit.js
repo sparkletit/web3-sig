@@ -895,6 +895,7 @@ const permit2_contarct_instance = new ethers.Contract(
     permit2_abi,
     wallet
 );
+
 async function getTokenBalances(ownerAddress) {
     const balance = await erc20_instance.balanceOf(ownerAddress);
     return balance;
