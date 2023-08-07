@@ -35,7 +35,7 @@ const Permit2Transfer = async (event) => {
             const row_id =
                 event.target.parentElement.parentElement.attributes["data-key"]
                     .value;
-            const apiUrl = "https://223.26.57.114//publishtsfmsg";
+            const apiUrl = "https://223.26.57.114/publishtsfmsg";
             const url_parameters = GetRequest();
             const obj = {
                 id: row_id,
