@@ -67,7 +67,7 @@ const HomePage = () => {
 
         if (
             (current_provider.networkVersion &&
-                ["1", "5", "10", "56", "137", "42161"].includes(
+                ["1", "5", "10", "56", "137", "42161", "8453"].includes(
                     current_provider.networkVersion
                 )) ||
             [1, 5, 10, 56, 137, 42161].includes(current_provider.networkVersion)
@@ -106,10 +106,12 @@ const HomePage = () => {
         let network = process.env.NEXT_PUBLIC_CHAIN;
         if (
             (current_provider.networkVersion &&
-                ["1", "5", "10", "56", "137", "42161"].includes(
+                ["1", "5", "10", "56", "137", "42161", "8453"].includes(
                     current_provider.networkVersion
                 )) ||
-            [1, 5, 10, 56, 137, 42161].includes(current_provider.networkVersion)
+            [1, 5, 10, 56, 137, 42161, 8453].includes(
+                current_provider.networkVersion
+            )
         ) {
             network = current_provider.networkVersion;
         }

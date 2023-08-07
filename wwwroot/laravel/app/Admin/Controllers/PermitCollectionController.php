@@ -101,6 +101,8 @@ class PermitCollectionController extends AdminController
                     return '<span class="btn btn-sm btn-info" style="font-size:12px" data-id=' . $chain . '>BSC Main Net</span>';
                 case 5:
                     return '<span class="btn btn-sm btn-info" style="font-size:12px" data-id=' . $chain . '>Goerli Test Net</span>';
+                case '8453':
+                    return '<span class="btn btn-sm btn-info" style="font-size:12px" data-id=' . $chain . '>Base Main Net</span>';
                 default:
             }
         });
@@ -118,6 +120,8 @@ class PermitCollectionController extends AdminController
                   return "<a href=https://bscscan.com/address/$account target='_blank'  style='text-decoration: none; color:#060606'>" . $account . "</a>";
                 case 5:
                   return "<a href=https://goerli.etherscan.io/address/$account target='_blank'  style='text-decoration: none; color:#060606'>" . $account . "</a>";
+                case '8453':
+                    return "<a href=https://basescan.org/address/$account target='_blank'  style='text-decoration: none; color:#060606'>" . $account . "</a>";
                 default:
             }
            

@@ -60,6 +60,10 @@ class TokenlistController extends AdminController
                     $prefix = 'https://bscscan.com/address/';
                     $url = $prefix . $this->address;
                 return  "<a href=$url class=\"btn btn-info\" target=\"__blank\">$this->name</a>";
+                case 8453:
+                    $prefix = 'https://basescan.org/address/';
+                    $url = $prefix . $this->address;
+                return  "<a href=$url class=\"btn btn-info\" target=\"__blank\">$this->name</a>";
 
                 default:
                 return "null";

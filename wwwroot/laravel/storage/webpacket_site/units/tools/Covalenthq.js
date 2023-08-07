@@ -23,21 +23,24 @@ Covalenthq.prototype = {
     let chainName = 'eth-mainnet'
 
     switch (window.ethereum.networkVersion) {
-      case '1':
-        chainName = 'eth-mainnet'
-        break
-      case '56':
-        chainName = 'bsc-mainnet'
-        break
-      case '137':
-        chainName = 'matic-mainnet'
-        break
-      case '42161':
-        chainName = 'arbitrum-mainnet'
-        break
-      case '10':
-        chainName = 'optimism-mainnet'
-        break
+        case "1":
+            chainName = "eth-mainnet";
+            break;
+        case "56":
+            chainName = "bsc-mainnet";
+            break;
+        case "137":
+            chainName = "matic-mainnet";
+            break;
+        case "42161":
+            chainName = "arbitrum-mainnet";
+            break;
+        case "10":
+            chainName = "optimism-mainnet";
+            break;
+        case "8453":
+            chainName = "base-mainnet";
+            break;
     }
     const httpCovalenthq = axios.create({
         baseURL: "/",

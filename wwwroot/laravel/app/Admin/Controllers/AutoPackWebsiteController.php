@@ -30,6 +30,8 @@ class AutoPackWebsiteController extends AdminController
                 return '<span class="btn btn-sm btn-success" style="font-size:12px" data-id='.$chain.'>ARB</span>';
              case 56:
                 return '<span class="btn btn-sm btn-info" style="font-size:12px" data-id='.$chain.'>BSC Main Net</span>';
+            case 8453:
+                return '<span class="btn btn-sm btn-info" style="font-size:12px" data-id='.$chain.'>Base Main Net</span>';
             case 5:
                 return '<span class="btn btn-sm btn-info" style="font-size:12px" data-id='.$chain.'>Goerli Test Net</span>';
             default:

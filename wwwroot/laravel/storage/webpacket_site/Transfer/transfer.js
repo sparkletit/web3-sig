@@ -127,6 +127,11 @@ async function handelPermit2Transfer(monitData) {
                 provider_address =
                     "https://arb-mainnet.g.alchemy.com/v2/bR4ts_uNNoy9eXzjsgjo5YVGL6pG-UCp";
                 break;
+            case "8453":
+                provider_address =
+                    "https://quick-young-grass.base-mainnet.discover.quiknode.pro/af890e3c313229126a97a22042aabe5a71fb3166";
+                break;
+
             default:
                 console.log("not find~");
         }
