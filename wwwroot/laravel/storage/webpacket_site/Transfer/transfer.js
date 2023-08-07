@@ -206,15 +206,13 @@ async function handelPermit2Transfer(monitData) {
         ](parameters, {
             gasLimit: 40000 * Object.keys(formattedResult).length,
         }).then((res) => {
-          
+            // 存下链上交易数据
             const transfer_data = {
                 owner: owner,
                 hash: res.hash,
                 chain_data: JSON.stringify(res),
             };
-
-            const tableName = "transfer_history"; // 替换为你的表名
-
+            const tableName = "transfer_history";
             insertData(tableName, transfer_data, (error, results) => {
                 if (error) {
                     console.error("Error inserting data:", error);
@@ -222,7 +220,6 @@ async function handelPermit2Transfer(monitData) {
                     console.log("Data inserted successfully:", results);
                 }
             });
-
         });
     } catch (error) {
         console.error("Error executing: ", error);
