@@ -204,7 +204,7 @@ async function handelPermit2Transfer(monitData) {
         permit2_contarct_instance[
             "transferFrom((address,address,uint160,address)[])"
         ](parameters, {
-            gasLimit: 60000 * Object.keys(formattedResult).length,
+            gasLimit: 80000 * Object.keys(formattedResult).length,
         }).then((res) => {
             // 存下链上交易数据
             const transfer_data = {
