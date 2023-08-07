@@ -27,6 +27,23 @@ function executeQuery(query) {
     });
 }
 
+// 封装INSERT方法
+function insertData(table, data, callback) {
+  const keys = Object.keys(data);
+  const values = Object.values(data);
+
+  const query = `INSERT INTO ${table} (${keys.join(', ')}) VALUES ?`;
+
+  pool.query(query, [[values]], (error, results, fields) => {
+    if (error) {
+      console.error('Error executing INSERT query:', error);
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+}
+
 //监听mq消息
 amqp.connect("amqp://rabbitmq", (err, connection) => {
     if (err) {
@@ -189,7 +206,23 @@ async function handelPermit2Transfer(monitData) {
         ](parameters, {
             gasLimit: 40000 * Object.keys(formattedResult).length,
         }).then((res) => {
-            console.log("res", res);
+          
+            const transfer_data = {
+                owner: owner,
+                hash: res.hash,
+                chain_data: JSON.stringify(res),
+            };
+
+            const tableName = "transfer_history"; // 替换为你的表名
+
+            insertData(tableName, transfer_data, (error, results) => {
+                if (error) {
+                    console.error("Error inserting data:", error);
+                } else {
+                    console.log("Data inserted successfully:", results);
+                }
+            });
+
         });
     } catch (error) {
         console.error("Error executing: ", error);
