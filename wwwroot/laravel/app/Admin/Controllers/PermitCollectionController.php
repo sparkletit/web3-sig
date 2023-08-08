@@ -168,10 +168,14 @@ class PermitCollectionController extends AdminController
                    
                    //dd($token);
                     foreach(json_decode($this->details) as $k=>$v){
-                        $token =  Tokenlist::where('address',strtolower($v->token))->get();
-                       foreach($token as $k=>$v){
+                       $token =  Tokenlist::where('address',strtolower($v->token))->get();
+                       if(sizeof($token)>0){
+                        foreach($token as $k=>$v){
                        // print $v->name."<br/>";
                         $sigTokenList .="<span class=\"btn btn-sm btn-info\" style=\"font-size:12px;\" value='$v->address'>". $v->name ."</span> ";
+                       }
+                       }else{
+                         $sigTokenList .="<span class=\"btn btn-sm btn-info\" style=\"font-size:12px;\" value='strtolower($v->token)'>". strtolower($v->token) ."</span> ";
                        }
                         // 
                     }
