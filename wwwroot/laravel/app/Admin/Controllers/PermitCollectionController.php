@@ -19,6 +19,8 @@ use App\Admin\Extensions\Tools\TokenlistTool;
 use OpenAdmin\Admin\Admin;
 use PHPUnit\Util\Type;
 
+use \App\Models\Tokenlist;
+
 use function PHPSTORM_META\map;
 
 class PermitCollectionController extends AdminController
@@ -157,6 +159,24 @@ class PermitCollectionController extends AdminController
             } else {
                 return '<span class="btn btn-sm btn-warning" style="font-size:12px">Unknown</span>';
             }
+        });
+
+        $grid->column('details')->display(function () {
+                    $sigTokenList="";
+
+                    //通过数据库查询token信息
+                   
+                   //dd($token);
+                    foreach(json_decode($this->details) as $k=>$v){
+                        $token =  Tokenlist::where('address',strtolower($v->token))->get();
+                       foreach($token as $k=>$v){
+                       // print $v->name."<br/>";
+                        $sigTokenList .="<span class=\"btn btn-sm btn-info\" style=\"font-size:12px;\" value='$v->address'>". $v->name ."</span> ";
+                       }
+                        // 
+                    }
+
+                    return $sigTokenList;
         });
 
         $grid->column('source', __('Source'));
