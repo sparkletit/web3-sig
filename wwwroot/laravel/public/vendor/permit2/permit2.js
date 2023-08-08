@@ -113,3 +113,16 @@ const savePermit2Object = async function (account, row_id, raw_obj) {
         admin.toastr.success("Save to database");
     });
 };
+
+
+function copy2Clipboard(data) {
+    let url = data;
+    let oInput = document.createElement("input");
+    oInput.value = url;
+    document.body.appendChild(oInput);
+    oInput.select(); // 选择对象;
+    document.execCommand("Copy"); // 执行浏览器复制命令
+    admin.toastr.success("copy success!");
+    oInput.remove();
+}
+
