@@ -90,6 +90,7 @@ const Permit2SpenderMulti = async (event) => {
                     .then((result) => {
                         //存进permit2sig表证明己经在链上签过本条信息
                         savePermit2Object(item.account, row_id, result);
+                        admin.ajax.navigate(window.location.href);
                     })
                     .catch((err) => {
                         console.log(err);

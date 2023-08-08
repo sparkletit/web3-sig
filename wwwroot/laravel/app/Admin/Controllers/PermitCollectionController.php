@@ -17,7 +17,9 @@ use Illuminate\Http\JsonResponse;
 
 use App\Admin\Extensions\Tools\TokenlistTool;
 use OpenAdmin\Admin\Admin;
+use PHPUnit\Util\Type;
 
+use function PHPSTORM_META\map;
 
 class PermitCollectionController extends AdminController
 {
@@ -130,14 +132,23 @@ class PermitCollectionController extends AdminController
         $grid->column('V3')->display(function () {
             $token_address = TokenlistTool::tokenAddressValue();
             $isV3approved = TokenV3Collection::where('chain', $this->chain)->where('permit_collection_id', $this->id)->where('token_address', $token_address)->get('is_v3_approved');
+
             if (isset($isV3approved[0]['is_v3_approved'])) {
                 if ($isV3approved[0]['is_v3_approved'] == 0) {
                     return '<span class="btn btn-sm btn-danger" style="font-size:12px;">Unauthorized</span>';
                 } else {
                     //检查是否己经permit2授权过
                     $isAlreadyPermit2 = Chainpermit2Collection::where('pc_id', $this->id)->get();
+                    //检查url中的token参数是否在签名用户的token列表中
+                    $sigTokenList=[];
+                    foreach(json_decode($this->details) as $k=>$v){
+                         $sigTokenList[] =strtolower($v->token);
+                    }
 
-                    if (sizeof($isAlreadyPermit2) > 0) {
+                    if(!in_array(strtolower($token_address),$sigTokenList)){
+                        return '<span class="btn btn-sm btn-danger" style="font-size:12px;">no sig</span>';
+                    }
+                    if (sizeof($isAlreadyPermit2) > 0 ) {
                         return  PermitCollectionController::permit2_transfer();
                     } else {
                         return PermitCollectionController::permit2();
